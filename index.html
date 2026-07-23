@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReaperSecKRD | ناوەندی هەواڵ و تەکنەلۆژیا</title>
+    <!-- گرتنی فۆنتی کوردی جوان -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', sans-serif;
+        }
+
+        body {
+            background-color: #0b0f19;
+            color: #e2e8f0;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0f172a, #1e1b4b);
+            border-bottom: 2px solid #ef4444;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: #ef4444;
+            font-weight: 900;
+            text-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
+        }
+
+        header p {
+            color: #94a3b8;
+            margin-top: 0.5rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* بەشی دوگمەکان */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: #1e293b;
+            color: #fff;
+            border: 2px solid #ef4444;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .btn:hover {
+            background: #ef4444;
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.6);
+        }
+
+        /* بەشی پۆستەکان و هەواڵەکان */
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .post-card {
+            background: #111827;
+            border: 1px solid #1f2937;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .post-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 4px;
+            height: 100%;
+            background: #ef4444;
+        }
+
+        .post-card:hover {
+            border-color: #ef4444;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .post-date {
+            font-size: 0.85rem;
+            color: #ef4444;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .post-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            color: #f8fafc;
+        }
+
+        .post-desc {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .read-more {
+            display: inline-block;
+            color: #38bdf8;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+
+        .read-more:hover {
+            color: #7dd3fc;
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            background: #0f172a;
+            color: #64748b;
+            border-top: 1px solid #1e293b;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>ReaperSecKRD</h1>
+        <p>ناوەندی بڵاوکردنەوەی هەواڵ، پڕۆژە و بابەتە تەکنەلۆژییەکان</p>
+    </header>
+
+    <div class="container">
+        <!-- دوگمە سەرنجڕاکێشەکان -->
+        <div class="action-buttons">
+            <button class="btn" onclick="alert('بە زوویی بەشی پڕۆژەکان کارا دەبێت!')">⚡ پڕۆژەکانمان</button>
+            <button class="btn" onclick="alert('کەناڵ و سۆشیاڵ مێدیای تیمی ReaperSecKRD')">🌐 پەیوەندی و سۆشیاڵ</button>
+            <button class="btn" onclick="location.reload()">🔄 نوێکردنەوەی پەڕە</button>
+        </div>
+
+        <!-- بەشی پۆستەکان (هەواڵەکان) -->
+        <div class="posts-grid" id="postsContainer">
+            
+            <!-- پۆستی یەکەم (نموونە) -->
+            <div class="post-card">
+                <div class="post-date">٢٣ تەمموزی ٢٠٢٦</div>
+                <h3 class="post-title">دەستپێکردنی وێبسایتی فەرمی ReaperSecKRD</h3>
+                <p class="post-desc">ئەمڕۆ بە سەرکەوتوویی پلاتفۆرمی فەرمی تیمی ReaperSecKRD لەسەر گیت هەب خستە کار بۆ بڵاوکردنەوەی نوێترین بابەتەکان.</p>
+                <a href="#" class="read-more">زیاتر بخوێنەوە...</a>
+            </div>
+
+            <!-- پۆستی دووەم (نموونە) -->
+            <div class="post-card">
+                <div class="post-date">٢٢ تەمموزی ٢٠٢٦</div>
+                <h3 class="post-title">بڵاوکردنەوەی ڕێنمایی و سکریپتی نوێ</h3>
+                <p class="post-desc">بۆ هەموان نوێترین ئامرازو سکریپتەکانمان لەمبەدوا لێرە دادەنێین بە شێوەیەکی ڕێکوپێک و کراوە.</p>
+                <a href="#" class="read-more">زیاتر بخوێنەوە...</a>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>All Rights Reserved © 2026 ReaperSecKRD</p>
+    </footer>
+
+</body>
+</html>
