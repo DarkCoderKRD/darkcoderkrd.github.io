@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReaperSecKRD | Advanced Cyber Security Portal</title>
+    <title>ReaperSecKRD | Advanced Database & Cyber Security Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -35,7 +35,6 @@
                 radial-gradient(circle at 90% 80%, rgba(255, 0, 85, 0.04) 0%, transparent 40%);
         }
 
-        /* ناڤبار */
         nav {
             background: rgba(2, 6, 23, 0.95);
             backdrop-filter: blur(16px);
@@ -121,7 +120,6 @@
             box-shadow: 0 0 20px var(--neon-red);
         }
 
-        /* بەشی سەرەوە (هیدەر) و ئاڵا */
         header {
             padding: 3rem 1rem 2rem 1rem;
             text-align: center;
@@ -176,7 +174,6 @@
             padding-right: 10px;
         }
 
-        /* بەشی داتابۆرد (Dashboard) */
         .dashboard-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -200,13 +197,6 @@
             overflow: hidden;
         }
 
-        .dash-card::before {
-            content: '';
-            position: absolute;
-            top: 0; right: 0; width: 100%; height: 3px;
-            background: var(--neon-blue);
-        }
-
         .dash-value {
             font-size: 2rem;
             font-weight: 900;
@@ -220,7 +210,26 @@
             font-size: 0.95rem;
         }
 
-        /* بەشی کتێبخانە (Library) */
+        /* بەشی کاپچا */
+        .captcha-box {
+            background: #020617;
+            border: 1px dashed var(--neon-blue);
+            padding: 0.8rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .captcha-text {
+            font-family: monospace;
+            font-size: 1.2rem;
+            color: var(--neon-blue);
+            letter-spacing: 3px;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            user-select: none;
+        }
+
         .library-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -244,11 +253,6 @@
             transition: 0.3s;
         }
 
-        .lib-item:hover {
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
-        }
-
         .lib-title {
             font-size: 1.15rem;
             color: var(--text-main);
@@ -261,7 +265,6 @@
             margin-bottom: 1.2rem;
         }
 
-        /* بەشی چات */
         .chat-section {
             background: var(--panel-bg);
             border: 1px solid var(--border-color);
@@ -321,7 +324,6 @@
             box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
         }
 
-        /* مۆداڵەکان */
         .modal {
             display: none;
             position: fixed;
@@ -371,7 +373,6 @@
 </head>
 <body>
 
-    <!-- ناڤباری سەرەکی -->
     <nav>
         <div class="logo-text">ReaperSec</div>
         <div class="nav-links">
@@ -380,20 +381,17 @@
             <a href="#chatSection">چات</a>
         </div>
         
-        <!-- دوگمەکانی چوونەژوورەوە و تۆماربوون (لە کاتی نەمانی ئەکاونت دەردەکەون) -->
         <div class="auth-btns" id="authBtns">
             <button class="cyber-btn" onclick="openModal('loginModal')">چوونەژوورەوە</button>
             <button class="cyber-btn cyber-btn-red" onclick="openModal('registerModal')">تۆماربوون</button>
         </div>
 
-        <!-- بەشی پرۆفایل (دوای دروستکردنی ئەکاونت خۆکار دەرکەوتوو دەبێت و دوگمە کۆنەکان دەشارێتەوە) -->
         <div class="profile-area hidden" id="profileArea">
             <button class="cyber-btn" onclick="openModal('profileModal')">👤 پرۆفایل</button>
             <button class="cyber-btn cyber-btn-red" onclick="logout()">دەرچوون</button>
         </div>
     </nav>
 
-    <!-- هەیدەری ماڵپەڕ لەگەڵ ئاڵای کوردستان بە لینک -->
     <header>
         <div class="flag-box">
             <img src="https://upload.wikimedia.org/wikipedia/commons/3/35/Flag_of_Kurdistan.svg" alt="ئاڵای کوردستان" class="flag-img">
@@ -404,24 +402,22 @@
 
     <div class="container">
 
-        <!-- 1. بەشی داتابۆرد (Dashboard) -->
-        <h2 class="section-title" id="dashboard">📊 داتابۆردی سیستەم (Dashboard)</h2>
+        <h2 class="section-title" id="dashboard">📊 داتابۆردی سیستەم (Database Mock)</h2>
         <div class="dashboard-grid">
             <div class="dash-card">
-                <div class="dash-value">1,420</div>
-                <div class="dash-label">ئەندامە چالاکەکان</div>
+                <div class="dash-value" id="dbUsersCount">0</div>
+                <div class="dash-label">ئەندامە تۆمارکراوەکان لە DB</div>
             </div>
             <div class="dash-card">
                 <div class="dash-value" style="color: var(--neon-green);">99.9%</div>
-                <div class="dash-label">تەندروستی سێرڤەر</div>
+                <div class="dash-label">تەندروستی داتابەیس</div>
             </div>
             <div class="dash-card">
-                <div class="dash-value" style="color: var(--neon-red);">24/7</div>
-                <div class="dash-label">پاراستن و چاودێری</div>
+                <div class="dash-value" style="color: var(--neon-red);">Active</div>
+                <div class="dash-label">دۆخی سێرڤەر</div>
             </div>
         </div>
 
-        <!-- 2. بەشی کتێبخانە و ئامرازەکان (Library) -->
         <h2 class="section-title" id="library">📚 کتێبخانەی سایبەری (Library)</h2>
         <div class="library-grid">
             <div class="lib-item">
@@ -440,13 +436,12 @@
             </div>
         </div>
 
-        <!-- 3. بەشی چاتی گشتی (Live Chat) -->
         <h2 class="section-title" id="chatSection">💬 چاتی گشتی زیندوو</h2>
         <div class="chat-section">
             <div class="chat-box" id="chatBox">
                 <div class="chat-message">
                     <div class="user-name">سیستم:</div>
-                    <div>بەخێر هاتن! هەر ناوێک تۆمار بکەیت، لە چاتدا بە شێوازی (ناوی_ئەکاونت: پەیام) دەردەکەویت.</div>
+                    <div>بەخێر هاتن! سەکۆکە پشکنینی ناو و کاپچای بۆ زیادکراوە.</div>
                 </div>
             </div>
             <div class="chat-input-area">
@@ -462,8 +457,14 @@
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('loginModal')">&times;</span>
             <h2 style="margin-bottom: 1.2rem; color: var(--neon-blue); font-size: 1.4rem;">چوونەژوورەوە</h2>
-            <input type="text" id="loginUser" class="cyber-input" placeholder="ناوی بەکارهێنەر..." style="margin-bottom: 1rem;">
-            <input type="password" class="cyber-input" placeholder="وشەی تێپەڕ..." style="margin-bottom: 1.2rem;">
+            <input type="text" id="loginUser" class="cyber-input" placeholder="ناوی بەکارهێنەر (Username)..." style="margin-bottom: 1rem;">
+            <input type="password" id="loginPass" class="cyber-input" placeholder="وشەی تێپەڕ (Password)..." style="margin-bottom: 1rem;">
+            
+            <div class="captcha-box">
+                <div class="captcha-text" id="loginCaptchaCode"></div>
+                <input type="text" id="loginCaptchaInput" class="cyber-input" placeholder="کۆدی کاپچا لێرە بنووسە..." style="text-align: center;">
+            </div>
+
             <button class="cyber-btn" style="width: 100%;" onclick="handleLogin()">چوونەژوورەوە</button>
         </div>
     </div>
@@ -474,8 +475,13 @@
             <span class="close-modal" style="color: var(--neon-red);" onclick="closeModal('registerModal')">&times;</span>
             <h2 style="margin-bottom: 1.2rem; color: var(--neon-red); font-size: 1.4rem;">دروستکردنی ئەکاونت</h2>
             <input type="text" id="regUser" class="cyber-input" placeholder="ناوی بەکارهێنەر (بۆ نموونە ahmad)..." style="margin-bottom: 1rem;">
-            <input type="email" id="regEmail" class="cyber-input" placeholder="ئیمەیڵ..." style="margin-bottom: 1rem;">
-            <input type="password" class="cyber-input" placeholder="وشەی تێپەڕ..." style="margin-bottom: 1.2rem;">
+            <input type="password" id="regPass" class="cyber-input" placeholder="وشەی تێپەڕ (Password)..." style="margin-bottom: 1rem;">
+            
+            <div class="captcha-box">
+                <div class="captcha-text" id="regCaptchaCode"></div>
+                <input type="text" id="regCaptchaInput" class="cyber-input" placeholder="کۆدی کاپچا لێرە بنووسە..." style="text-align: center;">
+            </div>
+
             <button class="cyber-btn cyber-btn-red" style="width: 100%;" onclick="handleRegister()">تۆمارکردن</button>
         </div>
     </div>
@@ -487,22 +493,39 @@
             <h2 style="margin-bottom: 1.2rem; color: var(--neon-blue); font-size: 1.4rem;">زانیاری پرۆفایل</h2>
             <p style="color: var(--text-muted); margin-bottom: 0.5rem;">ناوی بەکارهێنەر:</p>
             <p id="profileNameDisplay" style="color: var(--neon-blue); font-weight: bold; font-size: 1.2rem; margin-bottom: 1rem;"></p>
-            <p style="color: var(--text-muted); margin-bottom: 0.5rem;">دۆخی ئەکاونت:</p>
-            <p style="color: var(--neon-green); font-weight: bold; margin-bottom: 1.5rem;">● فعال و پەیوەستکراو</p>
+            <p style="color: var(--text-muted); margin-bottom: 0.5rem;">دۆخی داتابەیس:</p>
+            <p style="color: var(--neon-green); font-weight: bold; margin-bottom: 1.5rem;">● لە داتابەیسدا تۆمارکراوە (DB Saved)</p>
             <button class="cyber-btn" style="width: 100%;" onclick="closeModal('profileModal')">داخستن</button>
         </div>
     </div>
 
     <footer>
-        <p>ReaperSecKRD © 2026 | Built for Advanced Cyber Space ☀️</p>
+        <p>ReaperSecKRD © 2026 | Secure Database & Captcha Engine ☀️</p>
     </footer>
 
-    <!-- سکریپتەکان -->
     <script>
-        let currentUser = localStorage.getItem('reaperUser') || null;
+        // داتابەیسێک لە شێوەی LocalStorage بۆ پاشەکەوتکردنی ئەکاونتەکان
+        let dbUsers = JSON.parse(localStorage.getItem('reaperDB_Users')) || [];
+        let currentUser = localStorage.getItem('reaperCurrentSession') || null;
+
+        let currentRegCaptcha = "";
+        let currentLoginCaptcha = "";
 
         window.onload = function() {
             updateAuthUI();
+            updateDBStats();
+            generateCaptchas();
+        }
+
+        function generateCaptchas() {
+            currentRegCaptcha = Math.floor(1000 + Math.random() * 9000).toString();
+            currentLoginCaptcha = Math.floor(1000 + Math.random() * 9000).toString();
+            document.getElementById('regCaptchaCode').innerText = currentRegCaptcha;
+            document.getElementById('loginCaptchaCode').innerText = currentLoginCaptcha;
+        }
+
+        function updateDBStats() {
+            document.getElementById('dbUsersCount').innerText = dbUsers.length;
         }
 
         function updateAuthUI() {
@@ -522,43 +545,91 @@
 
         function handleRegister() {
             let username = document.getElementById('regUser').value.trim();
-            if (!username) {
-                alert('تکایە ناوی بەکارهێنەر بنووسە!');
+            let password = document.getElementById('regPass').value.trim();
+            let captchaInput = document.getElementById('regCaptchaInput').value.trim();
+
+            if (!username || !password) {
+                alert('تکایە هەردوو خانه پڕ بکەرەوە!');
                 return;
             }
+
+            // پشکنینی کاپچا
+            if (captchaInput !== currentRegCaptcha) {
+                alert('کۆدی کاپچا هەڵەیە! تاقیکەرەوەی ڕۆبۆت سەرکەوتوو نەبوو.');
+                generateCaptchas();
+                return;
+            }
+
+            // پشکنینی بوونی ناوەکە پێشتر لە داتابەیسدا
+            let existingUser = dbUsers.find(u => u.username.toLowerCase() === username.toLowerCase());
+            if (existingUser) {
+                alert('ببورە، ئەم ناوی بەکارهێنەرە پێشتر لە داتابەیسدا تۆمارکراوە! ناوێکی تر هەڵبژێرە.');
+                generateCaptchas();
+                return;
+            }
+
+            // زیادکردنی ئەکاونت بۆ داتابەیس
+            let newUser = { username: username, password: password };
+            dbUsers.push(newUser);
+            localStorage.setItem('reaperDB_Users', JSON.stringify(dbUsers));
+
             currentUser = username;
-            localStorage.setItem('reaperUser', currentUser);
+            localStorage.setItem('reaperCurrentSession', currentUser);
+
             updateAuthUI();
+            updateDBStats();
             closeModal('registerModal');
-            alert('ئەکاونتەکەت دروستکرا و دوگمەکان شاررانەوە!');
+            alert('ئەکاونتەکەت بە سەرکەوتوویی لە داتابەیس تۆمارکرا و چوویتە ژوورەوە!');
         }
 
         function handleLogin() {
             let username = document.getElementById('loginUser').value.trim();
-            if (!username) {
-                alert('تکایە ناوی بەکارهێنەر بنووسە!');
+            let password = document.getElementById('loginPass').value.trim();
+            let captchaInput = document.getElementById('loginCaptchaInput').value.trim();
+
+            if (!username || !password) {
+                alert('تکایە ناو و وشەی تێپەڕ بنووسە!');
                 return;
             }
-            currentUser = username;
-            localStorage.setItem('reaperUser', currentUser);
+
+            if (captchaInput !== currentLoginCaptcha) {
+                alert('کۆدی کاپچا هەڵەیە!');
+                generateCaptchas();
+                return;
+            }
+
+            // پشکنینی داتابەیس بۆ چوونەژوورەوە
+            let foundUser = dbUsers.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password);
+            if (!foundUser) {
+                alert('ناوی بەکارهێنەر یان وشەی تێپەڕ هەڵەیە، یان ئەکاونتەکە بوونی نییە!');
+                generateCaptchas();
+                return;
+            }
+
+            currentUser = foundUser.username;
+            localStorage.setItem('reaperCurrentSession', currentUser);
+
             updateAuthUI();
             closeModal('loginModal');
-            alert('بە سەرکەوتوویی چوویە ژوورەوە!');
+            alert('بە سەرکەوتوویی چوویتە ژوورەوە!');
         }
 
         function logout() {
             currentUser = null;
-            localStorage.removeItem('reaperUser');
+            localStorage.removeItem('reaperCurrentSession');
             updateAuthUI();
-            alert('دەرچوویت لە ئەکاونتەکەت.');
+            alert('تۆ دەرچوویت لە ئەکاونتەکەت.');
         }
 
-        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function openModal(id) { 
+            document.getElementById(id).style.display = 'flex'; 
+            generateCaptchas();
+        }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
         function sendMessage() {
             if (!currentUser) {
-                alert('سەرەتا پێویستە چوونەژوورەوە بکەیت یان ئەکاونت دروست بکەیت!');
+                alert('سەرەتا پێویستە چوونەژوورەوە بکەیت یان ئەکاونت دروست بکەیت تاوەکو بتوانیت قسە بکەیت!');
                 openModal('loginModal');
                 return;
             }
