@@ -3,9 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReaperSecKRD | ناوەندی پێشکەوتووی سایبەری و چاتی گشتی</title>
+    <title>ReaperSecKRD | Cyber Security Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-deep: #020617;
+            --panel-bg: #0f172a;
+            --neon-blue: #00f0ff;
+            --neon-red: #ff0055;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #1e293b;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -15,101 +25,114 @@
         }
 
         body {
-            background-color: #030712;
-            color: #f3f4f6;
-            line-height: 1.8;
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            line-height: 1.7;
             overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 240, 255, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(255, 0, 85, 0.05) 0%, transparent 40%);
         }
 
-        /* ناڤبار */
+        /* ناڤباری مۆبایل و دێکتۆپ */
         nav {
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid #1e293b;
-            padding: 1rem 2rem;
+            background: rgba(2, 6, 23, 0.9);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.8rem 1.2rem;
             position: sticky;
             top: 0;
             z-index: 999;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
+        }
+
+        .logo-text {
+            font-weight: 900;
+            font-size: 1.2rem;
+            color: var(--neon-red);
+            text-shadow: 0 0 10px rgba(255, 0, 85, 0.5);
+            letter-spacing: 1px;
         }
 
         .nav-links {
             display: flex;
-            gap: 1.5rem;
-            flex-wrap: wrap;
+            gap: 1rem;
             align-items: center;
         }
 
-        nav a {
-            color: #cbd5e1;
+        .nav-links a {
+            color: var(--text-muted);
             text-decoration: none;
             font-weight: 700;
+            font-size: 0.9rem;
             transition: 0.3s;
-            font-size: 1rem;
         }
 
-        nav a:hover {
-            color: #38bdf8;
-            text-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
+        .nav-links a:hover {
+            color: var(--neon-blue);
+            text-shadow: 0 0 8px var(--neon-blue);
         }
 
-        .auth-nav-btns {
+        .auth-btns {
             display: flex;
-            gap: 0.8rem;
+            gap: 0.5rem;
         }
 
-        .small-btn {
+        .cyber-btn {
             background: transparent;
-            color: #38bdf8;
-            border: 1px solid #38bdf8;
-            padding: 0.4rem 1rem;
-            border-radius: 8px;
+            color: var(--neon-blue);
+            border: 1px solid var(--neon-blue);
+            padding: 0.4rem 0.9rem;
+            border-radius: 6px;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 700;
+            font-size: 0.85rem;
             transition: 0.3s;
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.1);
         }
 
-        .small-btn:hover {
-            background: #38bdf8;
-            color: #030712;
+        .cyber-btn:hover {
+            background: var(--neon-blue);
+            color: var(--bg-deep);
+            box-shadow: 0 0 20px var(--neon-blue);
         }
 
-        .small-btn-danger {
-            color: #ef4444;
-            border-color: #ef4444;
+        .cyber-btn-red {
+            color: var(--neon-red);
+            border-color: var(--neon-red);
+            box-shadow: 0 0 10px rgba(255, 0, 85, 0.1);
         }
 
-        .small-btn-danger:hover {
-            background: #ef4444;
+        .cyber-btn-red:hover {
+            background: var(--neon-red);
             color: #fff;
+            box-shadow: 0 0 20px var(--neon-red);
         }
 
-        /* بەشی سەرەوە (هیدەر) */
+        /* بەشی سەرەوە (هیدەر) بۆ مۆبایل */
         header {
-            background: linear-gradient(135deg, #090d16, #1e1b4b, #030712);
-            border-bottom: 3px solid #ef4444;
-            padding: 4rem 1rem;
+            padding: 3rem 1rem 2rem 1rem;
             text-align: center;
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.8) 0%, transparent 100%);
+            border-bottom: 1px solid var(--border-color);
         }
 
         .flag-box {
-            margin-bottom: 1.8rem;
             display: flex;
             justify-content: center;
+            margin-bottom: 1.5rem;
         }
 
         .kurdistan-css-flag {
-            width: 160px;
-            height: 105px;
+            width: 130px;
+            height: 85px;
             background: #000;
-            border-radius: 10px;
-            border: 2px solid #475569;
+            border-radius: 8px;
+            border: 1px solid var(--text-muted);
             position: relative;
-            box-shadow: 0 0 30px rgba(239, 68, 68, 0.6);
+            box-shadow: 0 0 25px rgba(255, 0, 85, 0.4);
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -124,212 +147,151 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 32px;
-            height: 32px;
+            width: 26px;
+            height: 26px;
             background: #ffcc00;
             border-radius: 50%;
             text-align: center;
-            line-height: 32px;
-            font-size: 16px;
-            font-weight: bold;
+            line-height: 26px;
+            font-size: 14px;
             color: #da251d;
-            box-shadow: 0 0 10px #ffcc00;
+            box-shadow: 0 0 8px #ffcc00;
         }
 
         header h1 {
-            font-size: 3.8rem;
-            color: #ef4444;
+            font-size: 2.5rem;
+            color: var(--neon-red);
             font-weight: 900;
-            text-shadow: 0 0 30px rgba(239, 68, 68, 0.8);
-            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(255, 0, 85, 0.6);
+            margin-bottom: 0.5rem;
         }
 
         header p {
-            color: #94a3b8;
-            margin-top: 0.75rem;
-            font-size: 1.25rem;
+            color: var(--text-muted);
+            font-size: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         .container {
-            max-width: 1250px;
-            margin: 3rem auto;
-            padding: 0 1.5rem;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
         }
 
         .section-title {
-            font-size: 2.4rem;
-            color: #f8fafc;
-            margin-bottom: 2rem;
-            border-bottom: 2px solid #1e293b;
-            padding-bottom: 0.75rem;
+            font-size: 1.6rem;
+            color: var(--text-main);
+            margin: 2rem 0 1.2rem 0;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
+            border-right: 4px solid var(--neon-blue);
+            padding-right: 10px;
         }
 
-        /* بەشی چات (Chat Box Section) */
+        /* بەشی چات بە شێوازێکی زۆر مۆدێرن */
         .chat-section {
-            background: #0f172a;
-            border: 1px solid #1e293b;
-            border-radius: 16px;
-            padding: 2rem;
-            margin-bottom: 4rem;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin-bottom: 2rem;
         }
 
         .chat-box {
-            height: 350px;
-            background: #030712;
-            border: 1px solid #1e293b;
-            border-radius: 12px;
-            padding: 1.5rem;
+            height: 280px;
+            background: #020617;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
             overflow-y: auto;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 0.8rem;
         }
 
         .chat-message {
             background: #1e293b;
-            padding: 0.8rem 1.2rem;
-            border-radius: 10px;
-            max-width: 80%;
-            animation: fadeIn 0.3s ease;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            border-left: 3px solid var(--neon-blue);
         }
 
         .chat-message .user-name {
-            color: #38bdf8;
+            color: var(--neon-blue);
             font-weight: bold;
-            font-size: 0.9rem;
-            margin-bottom: 0.2rem;
-        }
-
-        .chat-message .msg-text {
-            color: #f8fafc;
-            font-size: 1.05rem;
+            font-size: 0.8rem;
+            margin-bottom: 0.1rem;
         }
 
         .chat-input-area {
             display: flex;
-            gap: 1rem;
+            gap: 0.5rem;
         }
 
-        .form-control {
+        .cyber-input {
             width: 100%;
-            background: #030712;
-            border: 1px solid #334155;
-            padding: 1rem;
-            border-radius: 10px;
+            background: #020617;
+            border: 1px solid var(--border-color);
+            padding: 0.7rem 1rem;
+            border-radius: 8px;
             color: #fff;
-            font-size: 1rem;
+            font-size: 0.95rem;
             outline: none;
             transition: 0.3s;
         }
 
-        .form-control:focus {
-            border-color: #38bdf8;
-            box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+        .cyber-input:focus {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
         }
 
-        .btn {
-            background: #0f172a;
-            color: #38bdf8;
-            border: 2px solid #38bdf8;
-            padding: 0.9rem 2rem;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.2);
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
-        }
-
-        .btn:hover {
-            background: #38bdf8;
-            color: #030712;
-            transform: translateY(-2px);
-            box-shadow: 0 0 25px rgba(56, 189, 248, 0.6);
-        }
-
-        .btn-danger {
-            color: #ef4444;
-            border-color: #ef4444;
-            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
-        }
-
-        .btn-danger:hover {
-            background: #ef4444;
-            color: #fff;
-        }
-
-        /* بەشی پڕۆژە و سکریپتەکان */
-        .projects-grid {
+        /* بەشی گریدەکان (پڕۆژە و ئامار) بۆ مۆبایل */
+        .grid-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-            margin-bottom: 4rem;
+            grid-template-columns: 1fr;
+            gap: 1.2rem;
+            margin-bottom: 2rem;
         }
 
-        .project-card {
-            background: #0f172a;
-            border: 1px solid #1e293b;
-            border-radius: 16px;
-            padding: 2rem;
+        @media(min-width: 768px) {
+            .grid-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .cyber-card {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
             transition: 0.3s;
             position: relative;
             overflow: hidden;
         }
 
-        .project-card:hover {
-            border-color: #38bdf8;
-            transform: translateY(-5px);
+        .cyber-card:hover {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
         }
 
-        .project-title {
-            font-size: 1.4rem;
-            color: #f8fafc;
-            margin-bottom: 0.75rem;
-        }
-
-        .project-desc {
-            color: #94a3b8;
-            margin-bottom: 1.5rem;
-            font-size: 1rem;
-        }
-
-        /* بەشی خزمەتگوزاری و ئامار */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 4rem;
-        }
-
-        .stat-box {
-            background: #0f172a;
-            border: 1px solid #1e293b;
-            border-radius: 14px;
-            padding: 2rem;
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 900;
-            color: #38bdf8;
+        .cyber-card h3 {
+            color: var(--text-main);
+            font-size: 1.2rem;
             margin-bottom: 0.5rem;
         }
 
-        .stat-label {
-            color: #94a3b8;
-            font-size: 1.1rem;
+        .cyber-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
         }
 
-        /* Modal Popups بۆ ئەکاونت و پەیوەندی */
+        /* موداڵەکان (پەنجەرە خۆکارەکان) */
         .modal {
             display: none;
             position: fixed;
@@ -338,75 +300,59 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.85);
-            backdrop-filter: blur(5px);
+            background-color: rgba(2, 6, 23, 0.9);
+            backdrop-filter: blur(8px);
             justify-content: center;
             align-items: center;
             padding: 1rem;
         }
 
         .modal-content {
-            background: #0f172a;
-            border: 2px solid #38bdf8;
-            padding: 2.5rem;
-            border-radius: 16px;
-            max-width: 480px;
+            background: var(--panel-bg);
+            border: 1px solid var(--neon-blue);
+            padding: 2rem 1.5rem;
+            border-radius: 12px;
             width: 100%;
+            max-width: 400px;
             position: relative;
-            box-shadow: 0 0 40px rgba(56, 189, 248, 0.4);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.3);
         }
 
         .close-modal {
             position: absolute;
-            top: 15px;
-            left: 20px;
-            color: #38bdf8;
-            font-size: 2rem;
+            top: 10px;
+            left: 15px;
+            color: var(--neon-blue);
+            font-size: 1.8rem;
             font-weight: bold;
             cursor: pointer;
         }
 
-        .close-modal:hover { color: #fff; }
-
-        .modal-title {
-            color: #f8fafc;
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            text-align: center;
-        }
-
         footer {
             text-align: center;
-            padding: 3.5rem;
-            background: #090d16;
-            color: #64748b;
-            border-top: 1px solid #1e293b;
-            font-size: 1.1rem;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            padding: 2.5rem 1rem;
+            background: #020617;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            font-size: 0.85rem;
         }
     </style>
 </head>
 <body>
 
-    <!-- ناڤبارێکی پێشکەوتوو لەگەڵ دوگمەی ئەکاونت -->
     <nav>
+        <div class="logo-text">ReaperSec</div>
         <div class="nav-links">
-            <a href="#home">سەرەتا</a>
-            <a href="#chatSection">چاتی گشتی 💬</a>
-            <a href="#projects">پڕۆژەکان</a>
-            <a href="#stats">ئامارەکان</a>
+            <a href="#chatSection">چات</a>
+            <a href="#projects">پڕۆژە</a>
         </div>
-        <div class="auth-nav-btns">
-            <button class="small-btn" onclick="openModal('loginModal')">چوونەژوورەوە</button>
-            <button class="small-btn small-btn-danger" onclick="openModal('registerModal')">دروستکردنی ئەکاونت</button>
+        <div class="auth-btns">
+            <button class="cyber-btn" onclick="openModal('loginModal')">چوونەژوورەوە</button>
+            <button class="cyber-btn cyber-btn-red" onclick="openModal('registerModal')">تۆماربوون</button>
         </div>
     </nav>
 
-    <header id="home">
+    <header>
         <div class="flag-box">
             <div class="kurdistan-css-flag">
                 <div class="stripe-red"></div>
@@ -417,147 +363,89 @@
             </div>
         </div>
         <h1>ReaperSecKRD</h1>
-        <p>ناوەندی پێشکەوتووی ئاسایشی سایبەری، پڕۆگرامسازی و سەکۆی چاتی گشتی کوردی</p>
+        <p>ناوەندی سەردەمیی ئاسایشی سایبەری و سەکۆی تێکەڵاوی کوردی</p>
     </header>
 
     <div class="container">
 
-        <!-- بەشی چاتی زیندوو (Live Chat) -->
-        <h2 class="section-title" id="chatSection">💬 سەکۆی چاتی گشتی (ئەندامان)</h2>
+        <!-- بەشی چاتی خێرا بۆ مۆبایل -->
+        <h2 class="section-title" id="chatSection">💬 چاتی گشتی زیندوو</h2>
         <div class="chat-section">
             <div class="chat-box" id="chatBox">
                 <div class="chat-message">
                     <div class="user-name">DarkCoder</div>
-                    <div class="msg-text">بەخێر هاتن بۆ چاتی گشتی یاریزانان و هاککەران! قسەکانتان لێرە بنووسن.</div>
+                    <div>بەخێر هاتن! سەکۆکە بۆ مۆبایل زۆر خێرا و سووک کرا.</div>
                 </div>
             </div>
             <div class="chat-input-area">
-                <input type="text" id="chatUser" class="form-control" placeholder="ناوی خۆت..." style="max-width: 180px;">
-                <input type="text" id="chatText" class="form-control" placeholder="پەیامەکەت بنووسە..." onkeypress="checkEnter(event)">
-                <button class="btn" onclick="sendMessage()">ناردن</button>
+                <input type="text" id="chatUser" class="cyber-input" placeholder="ناو..." style="max-width: 100px;">
+                <input type="text" id="chatText" class="cyber-input" placeholder="پەیام..." onkeypress="checkEnter(event)">
+                <button class="cyber-btn" onclick="sendMessage()">ناردن</button>
             </div>
         </div>
 
-        <!-- بەشی ئامارەکان -->
-        <div class="stats-grid" id="stats">
-            <div class="stat-box">
-                <div class="stat-number">24/7</div>
-                <div class="stat-label">چاودێری و پاراستن</div>
+        <!-- پڕۆژەکان -->
+        <h2 class="section-title" id="projects">⚡ پڕۆژە و ئامرازەکان</h2>
+        <div class="grid-cards">
+            <div class="cyber-card">
+                <h3>Python Toolkit</h3>
+                <p>ئامرازی خێرا بۆ پشکنینی پۆرت و لۆگی سێرڤەرەکان.</p>
+                <button class="cyber-btn" onclick="alert('بەردەستە!')">داگرتن</button>
             </div>
-            <div class="stat-box">
-                <div class="stat-number">1,420</div>
-                <div class="stat-label">ئەندامی تۆمارکراو</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-number">100%</div>
-                <div class="stat-label">ئۆپن سۆرس و بێبەرامبەر</div>
-            </div>
-        </div>
-
-        <!-- بەشی پڕۆژە و سکریپتەکان -->
-        <h2 class="section-title" id="projects">💻 پڕۆژە و سکریپتە بەردەستەکان</h2>
-        <div class="projects-grid">
-            <div class="project-card">
-                <h3 class="project-title">⚡ Python Security Toolkit</h3>
-                <p class="project-desc">ئامرازێکی پایتۆن بۆ پشکنینی خێرای خاڵە لاوازەکان و شیکارکردنی لۆگی سێرڤەر.</p>
-                <button class="btn" onclick="alert('داگرتنی ئەم پڕۆژەیە بۆ ئەندامان بەردەستە!')">داگرتنی پڕۆژە</button>
-            </div>
-            <div class="project-card">
-                <h3 class="project-title">🌐 Cyber Web Boilerplate</h3>
-                <p class="project-desc">ڕووکارێکی تاریک و مۆدێرن بۆ دروستکردنی ماڵپەڕی تایبەتی تیمەکان.</p>
-                <button class="btn" onclick="alert('کۆدەکە لە گیتهەب بەردەستە!')">بینینی کۆد</button>
-            </div>
-            <div class="project-card">
-                <h3 class="project-title">🛡️ Network Shield Utility</h3>
-                <p class="project-desc">سکریپتێکی تایبەت بۆ چاودێریکردنی تۆڕ و پاراستنی پۆرتە سەرەکییەکان.</p>
-                <button class="btn" onclick="alert('لە قۆناغی تاقیکاریدایە!')">وردەکاری زیاتر</button>
+            <div class="cyber-card">
+                <h3>Cyber Boilerplate</h3>
+                <p>قالبێکی تاریک و نێۆن بۆ دروستکردنی ماڵپەڕی خێرا.</p>
+                <button class="cyber-btn" onclick="alert('لە گیتهەب هەیە!')">بینینی کۆد</button>
             </div>
         </div>
 
     </div>
 
-    <!-- پەنجەرەی چوونەژوورەوە (Login Modal) -->
+    <!-- مۆداڵی چوونەژوورەوە -->
     <div id="loginModal" class="modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('loginModal')">&times;</span>
-            <h2 class="modal-title">چوونەژوورەوە</h2>
-            <div style="margin-bottom: 1.2rem;">
-                <input type="email" class="form-control" placeholder="پۆستی ئەلیکترۆنی (Email)...">
-            </div>
-            <div style="margin-bottom: 1.5rem;">
-                <input type="password" class="form-control" placeholder="وشەی تێپەڕ (Password)...">
-            </div>
-            <button class="btn" style="width: 100%;" onclick="alert('بە سەرکەوتوویی چووقە ناو ئەکاونتەکەت!'); closeModal('loginModal');">چوونەژوورەوە</button>
+            <h2 style="margin-bottom: 1.2rem; color: var(--neon-blue); font-size: 1.4rem;">چوونەژوورەوە</h2>
+            <input type="email" class="cyber-input" placeholder="ئیمەیڵ..." style="margin-bottom: 1rem;">
+            <input type="password" class="cyber-input" placeholder="وشەی تێپەڕ..." style="margin-bottom: 1.2rem;">
+            <button class="cyber-btn" style="width: 100%;" onclick="alert('سەرکەوتوو بوو!'); closeModal('loginModal');">چوونەژوورەوە</button>
         </div>
     </div>
 
-    <!-- پەنجەرەی دروستکردنی ئەکاونت (Register Modal) -->
+    <!-- مۆداڵی تۆماربوون -->
     <div id="registerModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('registerModal')">&times;</span>
-            <h2 class="modal-title">دروستکردنی ئەکاونتی نوێ</h2>
-            <div style="margin-bottom: 1.2rem;">
-                <input type="text" class="form-control" placeholder="ناوی بەکارهێنەر (Username)...">
-            </div>
-            <div style="margin-bottom: 1.2rem;">
-                <input type="email" class="form-control" placeholder="پۆستی ئەلیکترۆنی (Email)...">
-            </div>
-            <div style="margin-bottom: 1.5rem;">
-                <input type="password" class="form-control" placeholder="وشەی تێپەڕی نوێ (Password)...">
-            </div>
-            <button class="btn btn-danger" style="width: 100%;" onclick="alert('ئەکاونتەکەت بە سەرکەوتوویی دروستکرا!'); closeModal('registerModal');">تۆمارکردن</button>
+        <div class="modal-content" style="border-color: var(--neon-red); box-shadow: 0 0 30px rgba(255, 0, 85, 0.3);">
+            <span class="close-modal" style="color: var(--neon-red);" onclick="closeModal('registerModal')">&times;</span>
+            <h2 style="margin-bottom: 1.2rem; color: var(--neon-red); font-size: 1.4rem;">دروستکردنی ئەکاونت</h2>
+            <input type="text" class="cyber-input" placeholder="ناوی بەکارهێنەر..." style="margin-bottom: 1rem;">
+            <input type="email" class="cyber-input" placeholder="ئیمەیڵ..." style="margin-bottom: 1rem;">
+            <input type="password" class="cyber-input" placeholder="وشەی تێپەڕی نوێ..." style="margin-bottom: 1.2rem;">
+            <button class="cyber-btn cyber-btn-red" style="width: 100%;" onclick="alert('ئەکاونت دروستکرا!'); closeModal('registerModal');">تۆمارکردن</button>
         </div>
     </div>
 
     <footer>
-        <p>All Rights Reserved © 2026 ReaperSecKRD | Built with Pride for Kurdistan ☀️</p>
+        <p>ReaperSecKRD © 2026 | Built for Mobile & Cyber Space ☀️</p>
     </footer>
 
-    <!-- سکریپتەکان بۆ کارپێکردنی چات و مۆدالەکان -->
     <script>
-        function openModal(modalId) {
-            document.getElementById(modalId).style.display = 'flex';
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
         function sendMessage() {
-            let user = document.getElementById('chatUser').value.trim();
+            let user = document.getElementById('chatUser').value.trim() || "مێوان";
             let text = document.getElementById('chatText').value.trim();
-            let chatBox = document.getElementById('chatBox');
-
-            if(user === "") {
-                user = "مێوان";
-            }
-            if(text === "") return;
-
-            let msgDiv = document.createElement('div');
-            msgDiv.className = 'chat-message';
-            msgDiv.innerHTML = `<div class="user-name">${escapeHtml(user)}</div><div class="msg-text">${escapeHtml(text)}</div>`;
-            
-            chatBox.appendChild(msgDiv);
+            if(!text) return;
+            let box = document.getElementById('chatBox');
+            box.innerHTML += `<div class="chat-message"><div class="user-name">${escapeHtml(user)}</div><div>${escapeHtml(text)}</div></div>`;
             document.getElementById('chatText').value = "";
-            chatBox.scrollTop = chatBox.scrollHeight;
+            box.scrollTop = box.scrollHeight;
         }
 
-        function checkEnter(e) {
-            if(e.key === 'Enter') {
-                sendMessage();
-            }
-        }
+        function checkEnter(e) { if(e.key === 'Enter') sendMessage(); }
+        function escapeHtml(text) { return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
-        function escapeHtml(text) {
-            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        }
-
-        window.onclick = function(event) {
-            if (event.target.classList.contains('modal')) {
-                event.target.style.display = "none";
-            }
-        }
+        window.onclick = function(e) { if(e.target.classList.contains('modal')) e.target.style.display = "none"; }
     </script>
-
 </body>
 </html>
