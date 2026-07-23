@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReaperSecKRD | Advanced Database & Cyber Security Portal</title>
+    <title>ReaperSecKRD | Ultimate Cyber Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-deep: #020617;
-            --panel-bg: #0f172a;
-            --neon-blue: #00f0ff;
-            --neon-red: #ff0055;
-            --neon-green: #22c55e;
+            --bg-deep: #050814;
+            --panel-bg: #0b1120;
+            --neon-blue: #38bdf8;
+            --neon-red: #f43f5e;
+            --neon-green: #10b981;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --border-color: #1e293b;
@@ -22,24 +22,21 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Vazirmatn', sans-serif;
-            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
         }
 
         body {
             background-color: var(--bg-deep);
             color: var(--text-main);
             line-height: 1.7;
-            overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(0, 240, 255, 0.04) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(255, 0, 85, 0.04) 0%, transparent 40%);
         }
 
         nav {
-            background: rgba(2, 6, 23, 0.95);
-            backdrop-filter: blur(16px);
+            background: rgba(5, 8, 20, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border-color);
-            padding: 0.8rem 1.2rem;
+            padding: 1rem 1.5rem;
             position: sticky;
             top: 0;
             z-index: 999;
@@ -50,17 +47,16 @@
 
         .logo-text {
             font-weight: 900;
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             color: var(--neon-red);
-            text-shadow: 0 0 10px rgba(255, 0, 85, 0.5);
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 10px rgba(244, 63, 94, 0.4);
         }
 
         .nav-links {
             display: flex;
-            gap: 1rem;
+            gap: 1.5rem;
             align-items: center;
-            flex-wrap: wrap;
         }
 
         .nav-links a {
@@ -68,12 +64,11 @@
             text-decoration: none;
             font-weight: 700;
             font-size: 0.9rem;
-            transition: 0.3s;
+            transition: 0.2s;
         }
 
         .nav-links a:hover {
             color: var(--neon-blue);
-            text-shadow: 0 0 8px var(--neon-blue);
         }
 
         .auth-btns, .profile-area {
@@ -90,101 +85,70 @@
             background: transparent;
             color: var(--neon-blue);
             border: 1px solid var(--neon-blue);
-            padding: 0.4rem 0.9rem;
-            border-radius: 6px;
+            padding: 0.5rem 1.1rem;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: 700;
             font-size: 0.85rem;
-            transition: 0.3s;
-            box-shadow: 0 0 10px rgba(0, 240, 255, 0.1);
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
+            transition: 0.2s;
+            -webkit-appearance: none;
         }
 
         .cyber-btn:hover {
             background: var(--neon-blue);
             color: var(--bg-deep);
-            box-shadow: 0 0 20px var(--neon-blue);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
         }
 
         .cyber-btn-red {
             color: var(--neon-red);
             border-color: var(--neon-red);
-            box-shadow: 0 0 10px rgba(255, 0, 85, 0.1);
         }
 
         .cyber-btn-red:hover {
             background: var(--neon-red);
             color: #fff;
-            box-shadow: 0 0 20px var(--neon-red);
+            box-shadow: 0 0 15px rgba(244, 63, 94, 0.4);
         }
 
         header {
-            padding: 3rem 1rem 2rem 1rem;
+            padding: 4.5rem 1rem 2.5rem 1rem;
             text-align: center;
-            background: linear-gradient(180deg, rgba(15, 23, 42, 0.8) 0%, transparent 100%);
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .flag-box {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .flag-img {
-            width: 150px;
-            height: 95px;
-            border-radius: 8px;
-            border: 2px solid var(--border-color);
-            box-shadow: 0 0 25px rgba(255, 0, 85, 0.4);
-            object-fit: cover;
+            background: radial-gradient(circle at center, rgba(56, 189, 248, 0.05) 0%, transparent 70%);
         }
 
         header h1 {
             font-size: 2.5rem;
             color: var(--neon-red);
             font-weight: 900;
-            text-shadow: 0 0 20px rgba(255, 0, 85, 0.6);
             margin-bottom: 0.5rem;
+            text-shadow: 0 0 20px rgba(244, 63, 94, 0.3);
         }
 
         header p {
             color: var(--text-muted);
             font-size: 1rem;
-            max-width: 600px;
-            margin: 0 auto;
         }
 
         .container {
             max-width: 1100px;
             margin: 0 auto;
-            padding: 1.5rem 1rem;
+            padding: 1.5rem;
         }
 
         .section-title {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             color: var(--text-main);
             margin: 2.5rem 0 1.2rem 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
             border-right: 4px solid var(--neon-blue);
-            padding-right: 10px;
+            padding-right: 12px;
         }
 
+        /* بەشی داتابۆرد و هەواڵەکان */
         .dashboard-grid {
             display: grid;
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 1.2rem;
-            margin-bottom: 2rem;
-        }
-
-        @media(min-width: 768px) {
-            .dashboard-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
         }
 
         .dash-card {
@@ -193,24 +157,110 @@
             border-radius: 12px;
             padding: 1.5rem;
             text-align: center;
-            position: relative;
-            overflow: hidden;
         }
 
         .dash-value {
             font-size: 2rem;
             font-weight: 900;
             color: var(--neon-blue);
-            margin-bottom: 0.3rem;
-            text-shadow: 0 0 10px rgba(0,240,255,0.3);
         }
 
         .dash-label {
             color: var(--text-muted);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
 
-        /* بەشی کاپچا */
+        /* سەکۆی هەواڵەکان لە داشبۆرد */
+        .news-section {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .news-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+
+        .news-item {
+            background: #020617;
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--neon-green);
+        }
+
+        .news-title {
+            font-weight: bold;
+            color: var(--neon-green);
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .news-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* مۆداڵەکان */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(5, 8, 20, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .modal-content {
+            background: var(--panel-bg);
+            border: 1px solid var(--neon-blue);
+            padding: 2rem;
+            border-radius: 14px;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 12px;
+            left: 15px;
+            color: var(--neon-blue);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .cyber-input {
+            width: 100%;
+            background: #020617;
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            margin-bottom: 1rem;
+            -webkit-appearance: none;
+        }
+
+        .cyber-input:focus {
+            border-color: var(--neon-blue);
+        }
+
         .captcha-box {
             background: #020617;
             border: 1px dashed var(--neon-blue);
@@ -224,150 +274,31 @@
             font-family: monospace;
             font-size: 1.2rem;
             color: var(--neon-blue);
-            letter-spacing: 3px;
+            letter-spacing: 4px;
             font-weight: bold;
-            margin-bottom: 0.5rem;
-            user-select: none;
-        }
-
-        .library-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.2rem;
-        }
-
-        @media(min-width: 768px) {
-            .library-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        .lib-item {
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: 0.3s;
-        }
-
-        .lib-title {
-            font-size: 1.15rem;
-            color: var(--text-main);
             margin-bottom: 0.4rem;
         }
 
-        .lib-desc {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 1.2rem;
+        #alertModal .modal-content {
+            text-align: center;
+            border-color: var(--neon-green);
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.2);
         }
-
-        .chat-section {
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1.2rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .chat-box {
-            height: 300px;
-            background: #020617;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1rem;
-            overflow-y: auto;
-            margin-bottom: 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-        }
-
-        .chat-message {
-            background: #1e293b;
-            padding: 0.6rem 1rem;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            border-left: 3px solid var(--neon-blue);
-            word-break: break-all;
-        }
-
-        .chat-message .user-name {
-            color: var(--neon-blue);
-            font-weight: bold;
-            font-size: 0.85rem;
-            margin-bottom: 0.1rem;
-        }
-
-        .chat-input-area {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .cyber-input {
-            width: 100%;
-            background: #020617;
-            border: 1px solid var(--border-color);
-            padding: 0.7rem 1rem;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 0.95rem;
-            outline: none;
-            transition: 0.3s;
-        }
-
-        .cyber-input:focus {
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(2, 6, 23, 0.9);
-            backdrop-filter: blur(8px);
-            justify-content: center;
-            align-items: center;
-            padding: 1rem;
-        }
-
-        .modal-content {
-            background: var(--panel-bg);
-            border: 1px solid var(--neon-blue);
-            padding: 2rem 1.5rem;
-            border-radius: 12px;
-            width: 100%;
-            max-width: 400px;
-            position: relative;
-            box-shadow: 0 0 30px rgba(0, 240, 255, 0.3);
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 10px;
-            left: 15px;
-            color: var(--neon-blue);
-            font-size: 1.8rem;
-            font-weight: bold;
-            cursor: pointer;
+        #alertMessage {
+            font-size: 1.05rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+            font-weight: 700;
         }
 
         footer {
             text-align: center;
-            padding: 2.5rem 1rem;
+            padding: 3rem 1rem;
             background: #020617;
             color: var(--text-muted);
             border-top: 1px solid var(--border-color);
-            font-size: 0.85rem;
-            margin-top: 3rem;
+            margin-top: 4rem;
+            font-size: 0.9rem;
         }
     </style>
 </head>
@@ -376,9 +307,7 @@
     <nav>
         <div class="logo-text">ReaperSec</div>
         <div class="nav-links">
-            <a href="#dashboard">داتابۆرد</a>
-            <a href="#library">کتێبخانە</a>
-            <a href="#chatSection">چات</a>
+            <a href="#dashboard">داتابۆرد و هەواڵەکان</a>
         </div>
         
         <div class="auth-btns" id="authBtns">
@@ -393,96 +322,69 @@
     </nav>
 
     <header>
-        <div class="flag-box">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/3/35/Flag_of_Kurdistan.svg" alt="ئاڵای کوردستان" class="flag-img">
-        </div>
-        <h1>ReaperSecKRD</h1>
-        <p>ناوەندی پێشکەوتووی سایبەری، پڕۆگرامسازی و سەکۆی تێکەڵاوی کوردی</p>
+        <h1>ReaperSec Portal</h1>
+        <p>پۆرتالێکی پێشکەوتووی سایبەری لەگەڵ بەشی هەواڵەکان و سیستەمی ئەمنی</p>
     </header>
 
     <div class="container">
-
-        <h2 class="section-title" id="dashboard">📊 داتابۆردی سیستەم (Database Mock)</h2>
+        <h2 class="section-title" id="dashboard">📊 داتابۆرد و ئاماری سیستەم</h2>
         <div class="dashboard-grid">
             <div class="dash-card">
                 <div class="dash-value" id="dbUsersCount">0</div>
-                <div class="dash-label">ئەندامە تۆمارکراوەکان لە DB</div>
+                <div class="dash-label">ئەندامە تۆمارکراوەکان</div>
             </div>
             <div class="dash-card">
-                <div class="dash-value" style="color: var(--neon-green);">99.9%</div>
-                <div class="dash-label">تەندروستی داتابەیس</div>
-            </div>
-            <div class="dash-card">
-                <div class="dash-value" style="color: var(--neon-red);">Active</div>
-                <div class="dash-label">دۆخی سێرڤەر</div>
+                <div class="dash-value" style="color: var(--neon-green);">Online</div>
+                <div class="dash-label">دۆخی سێرڤەری گیتهەب</div>
             </div>
         </div>
 
-        <h2 class="section-title" id="library">📚 کتێبخانەی سایبەری (Library)</h2>
-        <div class="library-grid">
-            <div class="lib-item">
-                <div>
-                    <h3 class="lib-title">📘 پێشەکییەکی تەواو بۆ ئاسایشی زانیاری</h3>
-                    <p class="lib-desc">کتێبێکی پوخت بە زمانی کوردی بۆ فێربوونی بنەماکانی تۆڕ و پاراستنی زانیاری.</p>
-                </div>
-                <button class="cyber-btn" onclick="alert('داگرتنی کتێب دەست پێکرد!')">داگرتنی فایل (PDF)</button>
+        <!-- بەشی هەواڵەکان لەناو داشبۆرد -->
+        <h2 class="section-title">⚡ دوایین هەواڵ و ئاگادارییە سایبەرییەکان</h2>
+        <div class="news-section">
+            <div class="news-list" id="newsList">
+                <!-- هەواڵەکان لێرە بە شێوەی خۆکار زیاد دەبن -->
             </div>
-            <div class="lib-item">
-                <div>
-                    <h3 class="lib-title">⚙️ پایتۆن بۆ ئۆتۆماتیککردنی کارەکان</h3>
-                    <p class="lib-desc">کۆمەڵێک سکریپتی ئامادەکراو بە زمانی پایتۆن بۆ پشکنینی پۆرتەکان.</p>
-                </div>
-                <button class="cyber-btn" onclick="alert('کۆدەکان لە گۆڕەپاندا بەردەستن!')">بینینی کۆدەکان</button>
+            <div id="adminNewsBox" class="hidden" style="border-top: 1px solid var(--border-color); padding-top: 1rem; margin-top: 1rem;">
+                <p style="color: var(--neon-green); font-weight: bold; margin-bottom: 0.5rem;">بۆشیەی زیادکردنی هەواڵ (تایبەت بە بەڕێوەبەر):</p>
+                <input type="text" id="newNewsTitle" class="cyber-input" placeholder="ناونیشانی هەواڵ...">
+                <input type="text" id="newNewsDesc" class="cyber-input" placeholder="وردەکاری هەواڵ...">
+                <button class="cyber-btn" style="width: 100%; border-color: var(--neon-green); color: var(--neon-green);" onclick="addNews()">بڵاوکردنەوەی هەواڵ</button>
             </div>
         </div>
+    </div>
 
-        <h2 class="section-title" id="chatSection">💬 چاتی گشتی زیندوو</h2>
-        <div class="chat-section">
-            <div class="chat-box" id="chatBox">
-                <div class="chat-message">
-                    <div class="user-name">سیستم:</div>
-                    <div>بەخێر هاتن! سەکۆکە پشکنینی ناو و کاپچای بۆ زیادکراوە.</div>
-                </div>
+    <!-- مۆداڵی تۆماربوون -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content" style="border-color: var(--neon-red);">
+            <span class="close-modal" style="color: var(--neon-red);" onclick="closeModal('registerModal')">&times;</span>
+            <h2 style="margin-bottom: 1rem; color: var(--neon-red); font-size: 1.2rem;">تۆمارکردنی ئەکاونت</h2>
+            <input type="text" id="regUser" class="cyber-input" placeholder="ناوی بەکارهێنەر...">
+            <input type="password" id="regPass" class="cyber-input" placeholder="وشەی تێپەڕ...">
+            
+            <div class="captcha-box">
+                <div class="captcha-text" id="regCaptchaCode"></div>
+                <input type="text" id="regCaptchaInput" class="cyber-input" placeholder="کۆدی کاپچا بنووسە..." style="text-align: center; margin-bottom: 0;">
             </div>
-            <div class="chat-input-area">
-                <input type="text" id="chatText" class="cyber-input" placeholder="پەیامەکەت بنووسە..." onkeypress="checkEnter(event)">
-                <button class="cyber-btn" onclick="sendMessage()">ناردن</button>
-            </div>
+
+            <button class="cyber-btn cyber-btn-red" style="width: 100%; margin-top: 0.5rem;" onclick="handleRegister()">تۆمارکردن</button>
         </div>
-
     </div>
 
     <!-- مۆداڵی چوونەژوورەوە -->
     <div id="loginModal" class="modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('loginModal')">&times;</span>
-            <h2 style="margin-bottom: 1.2rem; color: var(--neon-blue); font-size: 1.4rem;">چوونەژوورەوە</h2>
-            <input type="text" id="loginUser" class="cyber-input" placeholder="ناوی بەکارهێنەر (Username)..." style="margin-bottom: 1rem;">
-            <input type="password" id="loginPass" class="cyber-input" placeholder="وشەی تێپەڕ (Password)..." style="margin-bottom: 1rem;">
+            <h2 style="margin-bottom: 1rem; color: var(--neon-blue); font-size: 1.2rem;">چوونەژوورەوە</h2>
+            <input type="text" id="loginUser" class="cyber-input" placeholder="ناوی بەکارهێنەر...">
+            <input type="password" id="loginPass" class="cyber-input" placeholder="وشەی تێپەڕ...">
             
             <div class="captcha-box">
                 <div class="captcha-text" id="loginCaptchaCode"></div>
-                <input type="text" id="loginCaptchaInput" class="cyber-input" placeholder="کۆدی کاپچا لێرە بنووسە..." style="text-align: center;">
+                <input type="text" id="loginCaptchaInput" class="cyber-input" placeholder="کۆدی کاپچا بنووسە..." style="text-align: center; margin-bottom: 0;">
             </div>
 
-            <button class="cyber-btn" style="width: 100%;" onclick="handleLogin()">چوونەژوورەوە</button>
-        </div>
-    </div>
-
-    <!-- مۆداڵی تۆماربوون -->
-    <div id="registerModal" class="modal">
-        <div class="modal-content" style="border-color: var(--neon-red); box-shadow: 0 0 30px rgba(255, 0, 85, 0.3);">
-            <span class="close-modal" style="color: var(--neon-red);" onclick="closeModal('registerModal')">&times;</span>
-            <h2 style="margin-bottom: 1.2rem; color: var(--neon-red); font-size: 1.4rem;">دروستکردنی ئەکاونت</h2>
-            <input type="text" id="regUser" class="cyber-input" placeholder="ناوی بەکارهێنەر (بۆ نموونە ahmad)..." style="margin-bottom: 1rem;">
-            <input type="password" id="regPass" class="cyber-input" placeholder="وشەی تێپەڕ (Password)..." style="margin-bottom: 1rem;">
-            
-            <div class="captcha-box">
-                <div class="captcha-text" id="regCaptchaCode"></div>
-                <input type="text" id="regCaptchaInput" class="cyber-input" placeholder="کۆدی کاپچا لێرە بنووسە..." style="text-align: center;">
-            </div>
-
-            <button class="cyber-btn cyber-btn-red" style="width: 100%;" onclick="handleRegister()">تۆمارکردن</button>
+            <button class="cyber-btn" style="width: 100%; margin-top: 0.5rem;" onclick="handleLogin()">چوونەژوورەوە</button>
         </div>
     </div>
 
@@ -490,163 +392,142 @@
     <div id="profileModal" class="modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('profileModal')">&times;</span>
-            <h2 style="margin-bottom: 1.2rem; color: var(--neon-blue); font-size: 1.4rem;">زانیاری پرۆفایل</h2>
-            <p style="color: var(--text-muted); margin-bottom: 0.5rem;">ناوی بەکارهێنەر:</p>
-            <p id="profileNameDisplay" style="color: var(--neon-blue); font-weight: bold; font-size: 1.2rem; margin-bottom: 1rem;"></p>
-            <p style="color: var(--text-muted); margin-bottom: 0.5rem;">دۆخی داتابەیس:</p>
-            <p style="color: var(--neon-green); font-weight: bold; margin-bottom: 1.5rem;">● لە داتابەیسدا تۆمارکراوە (DB Saved)</p>
+            <h2 style="margin-bottom: 1rem; color: var(--neon-blue); font-size: 1.2rem;">پڕۆفایلی بەکارهێنەر</h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">ناو:</p>
+            <p id="profileNameDisplay" style="color: var(--neon-blue); font-weight: bold; margin-bottom: 1rem;"></p>
             <button class="cyber-btn" style="width: 100%;" onclick="closeModal('profileModal')">داخستن</button>
         </div>
     </div>
 
+    <!-- مۆداڵی ئاگادارییەکان -->
+    <div id="alertModal" class="modal">
+        <div class="modal-content">
+            <h3 style="color: var(--neon-green); margin-bottom: 0.8rem; font-size: 1.3rem;">ئاگاداری سیستم</h3>
+            <p id="alertMessage">نامەکە لێرە دەردەکەوێت...</p>
+            <button class="cyber-btn" style="width: 100%; border-color: var(--neon-green); color: var(--neon-green);" onclick="closeModal('alertModal')">باشە</button>
+        </div>
+    </div>
+
     <footer>
-        <p>ReaperSecKRD © 2026 | Secure Database & Captcha Engine ☀️</p>
+        <p>ReaperSecKRD © 2026 | Advanced Cyber Operations ☀️</p>
     </footer>
 
     <script>
-        // داتابەیسێک لە شێوەی LocalStorage بۆ پاشەکەوتکردنی ئەکاونتەکان
-        let dbUsers = JSON.parse(localStorage.getItem('reaperDB_Users')) || [];
-        let currentUser = localStorage.getItem('reaperCurrentSession') || null;
-
-        let currentRegCaptcha = "";
-        let currentLoginCaptcha = "";
+        let dbUsers = JSON.parse(localStorage.getItem('reaperPortal_DB')) || [];
+        let dbNews = JSON.parse(localStorage.getItem('reaperPortal_News')) || [
+            {title: "🔹 نوێترین نوێگەری سەکۆ", desc: "سەکۆی ReaperSecKRD بە سەرکەوتوویی لەسەر گیتهەب پەیج جێگیرکرا و سیستەمی ئەمنی و کاپچا چالاک کرا."}
+        ];
+        let currentUser = localStorage.getItem('reaperActiveUser') || null;
+        let regCap = "", loginCap = "";
 
         window.onload = function() {
-            updateAuthUI();
-            updateDBStats();
-            generateCaptchas();
+            updateUI();
+            updateStats();
+            renderNews();
+            genCap();
         }
 
-        function generateCaptchas() {
-            currentRegCaptcha = Math.floor(1000 + Math.random() * 9000).toString();
-            currentLoginCaptcha = Math.floor(1000 + Math.random() * 9000).toString();
-            document.getElementById('regCaptchaCode').innerText = currentRegCaptcha;
-            document.getElementById('loginCaptchaCode').innerText = currentLoginCaptcha;
+        function showCustomAlert(msg) {
+            document.getElementById('alertMessage').innerText = msg;
+            openModal('alertModal');
         }
 
-        function updateDBStats() {
+        function genCap() {
+            regCap = Math.floor(1000 + Math.random() * 9000).toString();
+            loginCap = Math.floor(1000 + Math.random() * 9000).toString();
+            document.getElementById('regCaptchaCode').innerText = regCap;
+            document.getElementById('loginCaptchaCode').innerText = loginCap;
+        }
+
+        function updateStats() {
             document.getElementById('dbUsersCount').innerText = dbUsers.length;
         }
 
-        function updateAuthUI() {
-            let authBtns = document.getElementById('authBtns');
-            let profileArea = document.getElementById('profileArea');
-            let profileNameDisplay = document.getElementById('profileNameDisplay');
+        function renderNews() {
+            let list = document.getElementById('newsList');
+            list.innerHTML = "";
+            dbNews.forEach(n => {
+                list.innerHTML += `<div class="news-item"><div class="news-title">${n.title}</div><div class="news-desc">${n.desc}</div></div>`;
+            });
+        }
+
+        function addNews() {
+            let t = document.getElementById('newNewsTitle').value.trim();
+            let d = document.getElementById('newNewsDesc').value.trim();
+            if(!t || !d) { showCustomAlert('⚠️ تکایە هەردوو خانەی هەواڵ پڕبکەرەوە!'); return; }
+            dbNews.unshift({title: t, desc: d});
+            localStorage.setItem('reaperPortal_News', JSON.stringify(dbNews));
+            document.getElementById('newNewsTitle').value = "";
+            document.getElementById('newNewsDesc').value = "";
+            renderNews();
+            showCustomAlert('✨ هەواڵەکە بە سەرکەوتوویی بڵاوکرایەوە!');
+        }
+
+        function updateUI() {
+            let auth = document.getElementById('authBtns');
+            let prof = document.getElementById('profileArea');
+            let adminBox = document.getElementById('adminNewsBox');
 
             if (currentUser) {
-                authBtns.classList.add('hidden');
-                profileArea.classList.remove('hidden');
-                profileNameDisplay.innerText = currentUser;
+                auth.classList.add('hidden');
+                prof.classList.remove('hidden');
+                document.getElementById('profileNameDisplay').innerText = currentUser;
+                adminBox.classList.remove('hidden'); // دەردەکەوێت کاتێک ئەکاونتت هەیە بۆ زیادکردنی هەواڵ
             } else {
-                authBtns.classList.remove('hidden');
-                profileArea.classList.add('hidden');
+                auth.classList.remove('hidden');
+                prof.classList.add('hidden');
+                adminBox.classList.add('hidden');
             }
         }
 
         function handleRegister() {
-            let username = document.getElementById('regUser').value.trim();
-            let password = document.getElementById('regPass').value.trim();
-            let captchaInput = document.getElementById('regCaptchaInput').value.trim();
+            let u = document.getElementById('regUser').value.trim();
+            let p = document.getElementById('regPass').value.trim();
+            let c = document.getElementById('regCaptchaInput').value.trim();
 
-            if (!username || !password) {
-                alert('تکایە هەردوو خانه پڕ بکەرەوە!');
-                return;
-            }
+            if (!u || !p) { showCustomAlert('⚠️ تکایە سەرجەم خانەکان پڕبکەرەوە!'); return; }
+            if (c !== regCap) { showCustomAlert('❌ کۆدی کاپچا هەڵەیە!'); genCap(); return; }
+            if (dbUsers.find(x => x.username.toLowerCase() === u.toLowerCase())) { showCustomAlert('⚠️ ئەم ناوی بەکارهێنەرە پێشتر هەیە!'); genCap(); return; }
 
-            // پشکنینی کاپچا
-            if (captchaInput !== currentRegCaptcha) {
-                alert('کۆدی کاپچا هەڵەیە! تاقیکەرەوەی ڕۆبۆت سەرکەوتوو نەبوو.');
-                generateCaptchas();
-                return;
-            }
+            dbUsers.push({username: u, password: p});
+            localStorage.setItem('reaperPortal_DB', JSON.stringify(dbUsers));
+            currentUser = u;
+            localStorage.setItem('reaperActiveUser', currentUser);
 
-            // پشکنینی بوونی ناوەکە پێشتر لە داتابەیسدا
-            let existingUser = dbUsers.find(u => u.username.toLowerCase() === username.toLowerCase());
-            if (existingUser) {
-                alert('ببورە، ئەم ناوی بەکارهێنەرە پێشتر لە داتابەیسدا تۆمارکراوە! ناوێکی تر هەڵبژێرە.');
-                generateCaptchas();
-                return;
-            }
-
-            // زیادکردنی ئەکاونت بۆ داتابەیس
-            let newUser = { username: username, password: password };
-            dbUsers.push(newUser);
-            localStorage.setItem('reaperDB_Users', JSON.stringify(dbUsers));
-
-            currentUser = username;
-            localStorage.setItem('reaperCurrentSession', currentUser);
-
-            updateAuthUI();
-            updateDBStats();
+            updateUI();
+            updateStats();
             closeModal('registerModal');
-            alert('ئەکاونتەکەت بە سەرکەوتوویی لە داتابەیس تۆمارکرا و چوویتە ژوورەوە!');
+            showCustomAlert('✨ ئەکاونتەکەت بە سەرکەوتوویی دروست کرا!');
         }
 
         function handleLogin() {
-            let username = document.getElementById('loginUser').value.trim();
-            let password = document.getElementById('loginPass').value.trim();
-            let captchaInput = document.getElementById('loginCaptchaInput').value.trim();
+            let u = document.getElementById('loginUser').value.trim();
+            let p = document.getElementById('loginPass').value.trim();
+            let c = document.getElementById('loginCaptchaInput').value.trim();
 
-            if (!username || !password) {
-                alert('تکایە ناو و وشەی تێپەڕ بنووسە!');
-                return;
-            }
+            if (!u || !p) { showCustomAlert('⚠️ تکایە خانەکان پڕبکەرەوە!'); return; }
+            if (c !== loginCap) { showCustomAlert('❌ کۆدی کاپچا هەڵەیە!'); genCap(); return; }
 
-            if (captchaInput !== currentLoginCaptcha) {
-                alert('کۆدی کاپچا هەڵەیە!');
-                generateCaptchas();
-                return;
-            }
+            let found = dbUsers.find(x => x.username.toLowerCase() === u.toLowerCase() && x.password === p);
+            if (!found) { showCustomAlert('❌ ناوی بەکارهێنەر یان وشەی تێپەڕ هەڵەیە!'); genCap(); return; }
 
-            // پشکنینی داتابەیس بۆ چوونەژوورەوە
-            let foundUser = dbUsers.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password);
-            if (!foundUser) {
-                alert('ناوی بەکارهێنەر یان وشەی تێپەڕ هەڵەیە، یان ئەکاونتەکە بوونی نییە!');
-                generateCaptchas();
-                return;
-            }
-
-            currentUser = foundUser.username;
-            localStorage.setItem('reaperCurrentSession', currentUser);
-
-            updateAuthUI();
+            currentUser = found.username;
+            localStorage.setItem('reaperActiveUser', currentUser);
+            updateUI();
             closeModal('loginModal');
-            alert('بە سەرکەوتوویی چوویتە ژوورەوە!');
+            showCustomAlert('🚀 بە سەرکەوتوویی چوویە ژوورەوە بۆ ژووری کۆنترۆڵ!');
         }
 
         function logout() {
             currentUser = null;
-            localStorage.removeItem('reaperCurrentSession');
-            updateAuthUI();
-            alert('تۆ دەرچوویت لە ئەکاونتەکەت.');
+            localStorage.removeItem('reaperActiveUser');
+            updateUI();
+            showCustomAlert('🔒 بە سەرکەوتوویی دەرچوویت لە ئەکاونتەکەت.');
         }
 
-        function openModal(id) { 
-            document.getElementById(id).style.display = 'flex'; 
-            generateCaptchas();
-        }
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; genCap(); }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-
-        function sendMessage() {
-            if (!currentUser) {
-                alert('سەرەتا پێویستە چوونەژوورەوە بکەیت یان ئەکاونت دروست بکەیت تاوەکو بتوانیت قسە بکەیت!');
-                openModal('loginModal');
-                return;
-            }
-
-            let text = document.getElementById('chatText').value.trim();
-            if(!text) return;
-
-            let box = document.getElementById('chatBox');
-            box.innerHTML += `<div class="chat-message"><div class="user-name">${escapeHtml(currentUser)}:</div><div>${escapeHtml(text)}</div></div>`;
-            document.getElementById('chatText').value = "";
-            box.scrollTop = box.scrollHeight;
-        }
-
-        function checkEnter(e) { if(e.key === 'Enter') sendMessage(); }
-        function escapeHtml(text) { return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
-
-        window.onclick = function(e) { if(e.target.classList.contains('modal')) e.target.style.display = "none"; }
+        window.onclick = function(e) { if(e.target.classList.contains('modal')) e.target.style.display = 'none'; }
     </script>
 </body>
 </html>
