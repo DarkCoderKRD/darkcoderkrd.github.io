@@ -1,1479 +1,373 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>⚡ AHMAD'S NEXUS — TikTok & PUBG</title>
-    <!-- Font Awesome 6 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>ULTRA AI GUARD PRO v5.0</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/face-landmarks-detection"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        body {
-            background: #05050f;
-            min-height: 100vh;
-            padding: 1.2rem;
-            color: #f0f0ff;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        #matrixCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            opacity: 0.10;
-            pointer-events: none;
-        }
-
-        .glow-orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(120px);
-            pointer-events: none;
-            z-index: 0;
-            animation: orbFloat 14s ease-in-out infinite alternate;
-        }
-        .glow-orb.fire { width: 450px; height: 450px; background: rgba(255, 120, 0, 0.10); top: -150px; right: -150px; }
-        .glow-orb.gold { width: 400px; height: 400px; background: rgba(255, 200, 0, 0.08); bottom: -150px; left: -150px; animation-delay: -5s; }
-        .glow-orb.orange { width: 350px; height: 350px; background: rgba(255, 80, 0, 0.07); top: 50%; left: 50%; transform: translate(-50%, -50%); animation-delay: -8s; }
-        .glow-orb.amber { width: 300px; height: 300px; background: rgba(255, 180, 0, 0.05); top: 20%; right: 20%; animation-delay: -3s; }
-
-        @keyframes orbFloat {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(60px, -50px) scale(1.2); }
-        }
-
-        .app {
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 1rem;
-            padding: 0.8rem 2rem;
-            background: rgba(10, 10, 30, 0.5);
-            backdrop-filter: blur(30px);
-            border-radius: 2.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.8), inset 0 0 80px rgba(255, 120, 0, 0.02);
-            margin-bottom: 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 2.5rem;
-            padding: 1px;
-            background: linear-gradient(135deg, rgba(255, 120, 0, 0.25), transparent, rgba(255, 200, 0, 0.2), transparent);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            pointer-events: none;
-        }
-
-        .header::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: conic-gradient(from 0deg, transparent, rgba(255, 120, 0, 0.02), transparent, rgba(255, 200, 0, 0.02), transparent);
-            animation: rotateGlow 30s linear infinite;
-            pointer-events: none;
-        }
-
-        @keyframes rotateGlow {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .logo .logo-icon {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, #ff7800, #ffaa00, #ff4500);
-            background-size: 300% 300%;
-            animation: gradientMove 4s ease-in-out infinite;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: white;
-            box-shadow: 0 0 50px rgba(255, 120, 0, 0.25), inset 0 0 30px rgba(255,255,255,0.05);
-            position: relative;
-        }
-
-        .logo .logo-icon::after {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            border-radius: 18px;
-            background: linear-gradient(135deg, #ff7800, #ffaa00, #ff4500);
-            background-size: 300% 300%;
-            animation: gradientMove 4s ease-in-out infinite;
-            z-index: -1;
-            filter: blur(12px);
-            opacity: 0.5;
-        }
-
-        @keyframes gradientMove {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        .logo .logo-icon i { animation: pulseGlow 2s ease-in-out infinite; }
-        @keyframes pulseGlow {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        .logo h1 {
-            font-weight: 800;
-            font-size: 1.6rem;
-            background: linear-gradient(135deg, #ffffff 30%, #ffaa00 60%, #ff7800);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -0.5px;
-        }
-
-        .logo .badge {
-            font-size: 0.45rem;
-            color: #ffaa00;
-            background: rgba(255, 170, 0, 0.08);
-            padding: 0.1rem 0.8rem;
-            border-radius: 40px;
-            border: 1px solid rgba(255, 170, 0, 0.06);
-            -webkit-text-fill-color: #ffaa00;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 700;
-        }
-
-        .header-stats {
-            display: flex;
-            gap: 0.8rem;
-            align-items: center;
-            flex-wrap: wrap;
-            position: relative;
-            z-index: 1;
-        }
-
-        .stat-pill {
-            background: rgba(255, 255, 255, 0.02);
-            padding: 0.3rem 1.2rem;
-            border-radius: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            text-align: center;
-            backdrop-filter: blur(8px);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-pill::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(255, 120, 0, 0.05), transparent);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
-        .stat-pill:hover::before { opacity: 1; }
-
-        .stat-pill .num {
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: #ffffff;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .stat-pill .label {
-            font-size: 0.4rem;
-            color: #555577;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            display: block;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-        }
-
-        .social-links a {
-            color: #444466;
-            font-size: 1rem;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            position: relative;
-        }
-
-        .social-links a::before {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            border-radius: 50%;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
-        .social-links a.instagram::before { background: radial-gradient(circle at 30% 30%, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
-        .social-links a.discord::before { background: #5865F2; }
-        .social-links a.youtube::before { background: #FF0000; }
-        .social-links a.facebook::before { background: #1877F2; }
-
-        .social-links a:hover::before { opacity: 0.2; }
-
-        .social-links a:hover {
-            transform: translateY(-4px) scale(1.1);
-            border-color: transparent;
-        }
-        .social-links a.instagram:hover { color: #E4405F; box-shadow: 0 0 40px rgba(228,64,95,0.12); }
-        .social-links a.discord:hover { color: #5865F2; box-shadow: 0 0 40px rgba(88,101,242,0.12); }
-        .social-links a.youtube:hover { color: #FF0000; box-shadow: 0 0 40px rgba(255,0,0,0.12); }
-        .social-links a.facebook:hover { color: #1877F2; box-shadow: 0 0 40px rgba(24,119,242,0.12); }
-
-        .social-links .social-label {
-            font-size: 0.45rem;
-            color: #333355;
-            margin-right: 0.1rem;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
-            font-weight: 600;
-        }
-
-        .main-card {
-            background: rgba(10, 10, 30, 0.4);
-            backdrop-filter: blur(30px);
-            border-radius: 2.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            padding: 2.2rem;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.02);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .main-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 2.5rem;
-            padding: 1px;
-            background: linear-gradient(135deg, rgba(255, 120, 0, 0.06), transparent, rgba(255, 200, 0, 0.04), transparent);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            pointer-events: none;
-        }
-
-        .main-card h2 {
-            font-weight: 700;
-            font-size: 1.6rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            flex-wrap: wrap;
-            position: relative;
-            z-index: 1;
-        }
-
-        .main-card h2 i {
-            color: #ff7800;
-            animation: pulseGlow 2s ease-in-out infinite;
-        }
-
-        .main-card h2 .highlight {
-            background: linear-gradient(135deg, #ffaa00, #ff7800);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .coming-soon {
-            font-size: 0.45rem;
-            color: #f59e0b;
-            background: rgba(245, 158, 11, 0.06);
-            padding: 0.1rem 1rem;
-            border-radius: 40px;
-            border: 1px solid rgba(245, 158, 11, 0.06);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 700;
-        }
-
-        .filter-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.6rem;
-            margin-bottom: 1.8rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .filter-btn {
-            background: rgba(10, 10, 28, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            color: #555577;
-            padding: 0.5rem 1.4rem;
-            border-radius: 60px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            backdrop-filter: blur(8px);
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        .filter-btn i { font-size: 1rem; }
-
-        .filter-btn:hover {
-            border-color: rgba(255, 255, 255, 0.08);
-            color: #ffffff;
-            transform: translateY(-3px) scale(1.02);
-        }
-
-        .filter-btn.active {
-            border-color: #ff7800;
-            color: #ffffff;
-            background: rgba(255, 120, 0, 0.06);
-            box-shadow: 0 0 40px rgba(255, 120, 0, 0.04);
-        }
-
-        .filter-btn.active-tiktok { border-color: #ffffff; color: #ffffff; background: rgba(255,255,255,0.03); }
-        .filter-btn.active-pubg { border-color: #ff6a00; color: #ff6a00; background: rgba(255, 106, 0, 0.06); }
-        .filter-btn.active-all { border-color: #ff7800; color: #ff7800; background: rgba(255,120,0,0.06); }
-
-        .filter-count {
-            font-size: 0.5rem;
-            background: rgba(255, 255, 255, 0.03);
-            padding: 0.02rem 0.5rem;
-            border-radius: 40px;
-            color: #444466;
-        }
-
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-            gap: 1.2rem;
-            margin-bottom: 2rem;
-            position: relative;
-            z-index: 1;
-            perspective: 1200px;
-        }
-
-        .product-card {
-            background: rgba(10, 10, 28, 0.3);
-            border-radius: 1.5rem;
-            padding: 1.3rem 1rem;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            cursor: pointer;
-            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-            text-align: center;
-            position: relative;
-            backdrop-filter: blur(8px);
-            transform-style: preserve-3d;
-        }
-
-        .product-card.hidden { display: none; }
-
-        .product-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 1.5rem;
-            background: radial-gradient(circle at 50% 0%, rgba(255, 120, 0, 0.04), transparent 70%);
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            pointer-events: none;
-        }
-
-        .product-card:hover {
-            transform: translateY(-10px) rotateX(5deg) rotateY(5deg) scale(1.02);
-            border-color: rgba(255, 120, 0, 0.10);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(255, 120, 0, 0.02);
-        }
-
-        .product-card:hover::before { opacity: 1; }
-
-        .product-card.selected {
-            border-color: #ff7800;
-            background: rgba(255, 120, 0, 0.04);
-            box-shadow: 0 0 60px rgba(255, 120, 0, 0.04), inset 0 0 60px rgba(255, 120, 0, 0.01);
-            transform: translateY(-8px) rotateX(2deg);
-        }
-
-        .product-card .icon {
-            font-size: 2.8rem;
-            margin-bottom: 0.4rem;
-            display: block;
-            animation: iconFloat 4s ease-in-out infinite;
-        }
-
-        @keyframes iconFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
-        }
-
-        .product-card:hover .icon { animation-duration: 1.5s; }
-
-        .product-card .platform-badge {
-            font-size: 0.4rem;
-            font-weight: 700;
-            padding: 0.05rem 0.6rem;
-            border-radius: 40px;
-            display: inline-block;
-            margin-bottom: 0.4rem;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-        }
-
-        .platform-badge.tiktok { background: rgba(255,255,255,0.03); color: #ffffff; border: 1px solid rgba(255,255,255,0.03); }
-        .platform-badge.pubg { background: rgba(255, 106, 0, 0.12); color: #ff6a00; border: 1px solid rgba(255, 106, 0, 0.06); }
-
-        .product-card .pname {
-            font-weight: 700;
-            font-size: 0.9rem;
-            color: #f0f0ff;
-        }
-
-        .product-card .pdesc {
-            font-size: 0.6rem;
-            color: #444466;
-            margin: 0.2rem 0;
-        }
-
-        .product-card .pprice {
-            font-weight: 800;
-            font-size: 1.2rem;
-            color: #ffaa00;
-        }
-
-        .product-card .pprice span {
-            font-size: 0.55rem;
-            color: #444466;
-            font-weight: 400;
-        }
-
-        .product-card .check {
-            position: absolute;
-            top: 0.6rem;
-            right: 0.6rem;
-            color: #22c55e;
-            font-size: 1.2rem;
-            display: none;
-            filter: drop-shadow(0 0 20px rgba(34,197,94,0.2));
-        }
-
-        .product-card.selected .check { display: block; }
-
-        .min-badge {
-            font-size: 0.4rem;
-            color: #444466;
-            background: rgba(255,255,255,0.02);
-            padding: 0.02rem 0.5rem;
-            border-radius: 40px;
-            display: inline-block;
-            margin-top: 0.3rem;
-            border: 1px solid rgba(255,255,255,0.02);
-            font-weight: 600;
-            letter-spacing: 0.3px;
-        }
-
-        .order-form {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.2rem;
-            margin-top: 0.5rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        @media (max-width: 640px) {
-            .order-form { grid-template-columns: 1fr; }
-            .product-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
-            .header { padding: 0.7rem 1.2rem; border-radius: 1.5rem; }
-            .header-stats { gap: 0.4rem; }
-            .stat-pill { padding: 0.1rem 0.6rem; }
-            .stat-pill .num { font-size: 0.8rem; }
-            .social-links a { width: 28px; height: 28px; font-size: 0.8rem; }
-            .social-links .social-label { display: none; }
-            .filter-btn { padding: 0.3rem 0.8rem; font-size: 0.65rem; }
-            .filter-btn i { font-size: 0.7rem; }
-            .main-card { padding: 1.2rem; }
-            .logo h1 { font-size: 1.1rem; }
-            .logo .logo-icon { width: 38px; height: 38px; font-size: 1.2rem; }
-            .main-card h2 { font-size: 1.2rem; }
-        }
-
-        .order-form .field {
-            display: flex;
-            flex-direction: column;
-            gap: 0.3rem;
-        }
-
-        .order-form .field label {
-            font-size: 0.6rem;
-            color: #555577;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            font-weight: 700;
-        }
-
-        .order-form .field label i {
-            color: #ffaa00;
-            margin-right: 0.4rem;
-        }
-
-        .order-form .field input,
-        .order-form .field select {
-            background: rgba(10, 10, 28, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            border-radius: 14px;
-            padding: 0.8rem 1.2rem;
-            color: #f0f0ff;
-            font-size: 0.9rem;
-            outline: none;
-            transition: all 0.4s ease;
-            backdrop-filter: blur(8px);
-        }
-
-        .order-form .field input:focus,
-        .order-form .field select:focus {
-            border-color: #ff7800;
-            box-shadow: 0 0 0 4px rgba(255, 120, 0, 0.04), 0 0 40px rgba(255, 120, 0, 0.02);
-            background: rgba(10, 10, 28, 0.6);
-        }
-
-        .order-form .field input::placeholder {
-            color: #333355;
-        }
-
-        .field.full-width { grid-column: 1 / -1; }
-
-        .delivery-info {
-            background: rgba(10, 10, 28, 0.2);
-            border-radius: 14px;
-            padding: 0.8rem 1.2rem;
-            border: 1px solid rgba(255, 255, 255, 0.02);
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            flex-wrap: wrap;
-            grid-column: 1 / -1;
-            backdrop-filter: blur(8px);
-        }
-
-        .delivery-info i {
-            color: #ffaa00;
-            font-size: 1.2rem;
-            animation: pulseGlow 2s ease-in-out infinite;
-        }
-
-        .delivery-info .label {
-            color: #444466;
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .delivery-info .time {
-            color: #ffaa00;
-            font-weight: 700;
-            font-size: 0.9rem;
-        }
-
-        .delivery-info .time.warning { color: #f59e0b; }
-
-        .order-summary {
-            background: rgba(255, 120, 0, 0.03);
-            border-radius: 14px;
-            padding: 0.8rem 1.5rem;
-            border: 1px solid rgba(255, 120, 0, 0.04);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            grid-column: 1 / -1;
-            backdrop-filter: blur(8px);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .order-summary::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(ellipse at 70% 50%, rgba(255, 120, 0, 0.02), transparent);
-            pointer-events: none;
-        }
-
-        .order-summary .total-label {
-            color: #444466;
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-        }
-
-        .order-summary .total-price {
-            font-weight: 800;
-            font-size: 2rem;
-            color: #ffffff;
-            position: relative;
-        }
-
-        .order-summary .total-price span {
-            color: #ffaa00;
-        }
-
-        .submit-btn {
-            background: linear-gradient(135deg, #ff7800, #ffaa00, #ff4500);
-            background-size: 300% 300%;
-            animation: gradientMove 4s ease-in-out infinite;
-            border: none;
-            color: white;
-            padding: 0.8rem 3rem;
-            border-radius: 60px;
-            font-weight: 800;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            box-shadow: 0 8px 40px rgba(255, 120, 0, 0.2);
-            position: relative;
-            overflow: hidden;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .submit-btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, transparent, rgba(255,255,255,0.08), transparent);
-            transform: translateX(-100%) rotate(15deg);
-            transition: transform 0.6s ease;
-        }
-
-        .submit-btn:hover::before { transform: translateX(100%) rotate(15deg); }
-
-        .submit-btn:hover {
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 12px 60px rgba(255, 120, 0, 0.3);
-        }
-
-        .submit-btn:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-            animation: none;
-        }
-
-        .orders-section {
-            margin-top: 2.5rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .orders-section h3 {
-            font-weight: 600;
-            font-size: 1rem;
-            color: #555577;
-            margin-bottom: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .orders-section h3 i {
-            color: #ffaa00;
-        }
-
-        .orders-table-wrap {
-            background: rgba(10, 10, 28, 0.2);
-            border-radius: 1.5rem;
-            padding: 1.2rem;
-            border: 1px solid rgba(255, 255, 255, 0.02);
-            overflow-x: auto;
-            backdrop-filter: blur(8px);
-        }
-
-        .orders-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.8rem;
-        }
-
-        .orders-table th {
-            text-align: left;
-            color: #333355;
-            font-weight: 600;
-            font-size: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            padding: 0.6rem 0.4rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
-        }
-
-        .orders-table td {
-            padding: 0.6rem 0.4rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.01);
-            color: #9999bb;
-            font-size: 0.75rem;
-        }
-
-        .orders-table .status {
-            font-size: 0.5rem;
-            font-weight: 700;
-            padding: 0.1rem 0.7rem;
-            border-radius: 40px;
-            display: inline-block;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .status.pending { background: rgba(245, 158, 11, 0.08); color: #f59e0b; }
-        .status.processing { background: rgba(59, 130, 246, 0.08); color: #3b82f6; }
-        .status.completed { background: rgba(34, 197, 94, 0.08); color: #22c55e; }
-        .status.cancelled { background: rgba(239, 68, 68, 0.08); color: #ef4444; }
-
-        .orders-table .delivery-time {
-            color: #ffaa00;
-            font-size: 0.6rem;
-            font-weight: 600;
-        }
-
-        .empty-state {
-            color: #333355;
-            text-align: center;
-            padding: 2.5rem 0;
-        }
-
-        .empty-state i {
-            font-size: 2.5rem;
-            display: block;
-            margin-bottom: 0.5rem;
-            opacity: 0.2;
-        }
-
-        .toast {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: rgba(10, 10, 30, 0.9);
-            backdrop-filter: blur(30px);
-            padding: 1rem 2rem;
-            border-radius: 1.2rem;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
-            color: #f0f0ff;
-            font-size: 0.85rem;
-            transform: translateY(120px) scale(0.9);
-            opacity: 0;
-            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-            z-index: 999;
-            max-width: 400px;
-        }
-
-        .toast.show {
-            transform: translateY(0) scale(1);
-            opacity: 1;
-        }
-
-        .toast i {
-            color: #ffaa00;
-            margin-right: 0.6rem;
-        }
-
-        .toast.error i { color: #ef4444; }
-        .toast.success i { color: #22c55e; }
-
-        ::-webkit-scrollbar { width: 4px; height: 4px; }
-        ::-webkit-scrollbar-track { background: rgba(10, 10, 28, 0.3); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: rgba(255, 120, 0, 0.2); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(255, 120, 0, 0.4); }
-
-        .glitch-text {
-            display: inline-block;
-            position: relative;
-        }
-
-        .glitch-text::before,
-        .glitch-text::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .glitch-text:hover::before {
-            animation: glitch1 0.3s ease-in-out;
-            color: #ff7800;
-        }
-
-        .glitch-text:hover::after {
-            animation: glitch2 0.3s ease-in-out 0.1s;
-            color: #ffaa00;
-        }
-
-        @keyframes glitch1 {
-            0% { transform: translate(-2px, -2px); opacity: 0.8; }
-            100% { transform: translate(2px, 2px); opacity: 0; }
-        }
-
-        @keyframes glitch2 {
-            0% { transform: translate(2px, -2px); opacity: 0.8; }
-            100% { transform: translate(-2px, 2px); opacity: 0; }
-        }
-
-        .signature {
-            text-align: center;
-            margin-top: 2rem;
-            font-size: 0.7rem;
-            color: #333355;
-            letter-spacing: 2px;
-            font-weight: 300;
-            position: relative;
-            z-index: 1;
-        }
-
-        .signature span {
-            background: linear-gradient(135deg, #ffaa00, #ff7800);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-weight: 700;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #030712; color: #f8fafc; touch-action: manipulation; }
+        .orbitron { font-family: 'Orbitron', sans-serif; }
+        .unmirror { transform: scaleX(-1); }
+        .cyber-border { border: 1px solid rgba(56, 189, 248, 0.3); box-shadow: 0 0 15px rgba(56, 189, 248, 0.1); }
+        .cyber-alert { border: 1px solid #ff0055 !important; box-shadow: 0 0 20px rgba(255, 0, 85, 0.4) !important; }
     </style>
 </head>
-<body>
-    <!-- MATRIX RAIN CANVAS -->
-    <canvas id="matrixCanvas"></canvas>
+<body class="min-h-screen flex flex-col justify-between p-2 md:p-4 text-xs">
 
-    <!-- GLOW ORBS -->
-    <div class="glow-orb fire"></div>
-    <div class="glow-orb gold"></div>
-    <div class="glow-orb orange"></div>
-    <div class="glow-orb amber"></div>
-
-    <div class="app">
-        <!-- HEADER -->
-        <header class="header">
-            <div class="logo">
-                <div class="logo-icon"><i class="fas fa-bolt"></i></div>
-                <h1 class="glitch-text" data-text="AHMAD'S NEXUS">AHMAD'S NEXUS</h1>
-                <span class="badge"><i class="fas fa-star"></i> elite</span>
-            </div>
-            <div class="header-stats">
-                <div class="social-links">
-                    <span class="social-label">Connect</span>
-                    <a href="#" class="instagram" title="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="discord" title="Discord" target="_blank"><i class="fab fa-discord"></i></a>
-                    <a href="#" class="youtube" title="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
-                    <a href="#" class="facebook" title="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                </div>
-                <div class="stat-pill">
-                    <span class="num" id="totalOrders">0</span>
-                    <span class="label">Orders</span>
-                </div>
-                <div class="stat-pill">
-                    <span class="num" id="totalSpent">$0</span>
-                    <span class="label">Spent</span>
-                </div>
-            </div>
-        </header>
-
-        <!-- MAIN CARD -->
-        <div class="main-card">
-            <h2>
-                <i class="fas fa-rocket"></i> <span class="highlight">Ahmad</span>'s Order Hub
-                <span class="coming-soon"><i class="fas fa-hourglass-half"></i> more designs incoming</span>
-            </h2>
-
-            <!-- FILTER BUTTONS -->
-            <div class="filter-buttons" id="filterButtons">
-                <button class="filter-btn active active-all" data-filter="all">
-                    <i class="fas fa-th-large"></i> All <span class="filter-count" id="countAll">0</span>
-                </button>
-                <button class="filter-btn" data-filter="tiktok">
-                    <i class="fab fa-tiktok"></i> TikTok <span class="filter-count" id="countTiktok">0</span>
-                </button>
-                <button class="filter-btn" data-filter="pubg">
-                    <i class="fas fa-crosshairs"></i> PUBG <span class="filter-count" id="countPubg">0</span>
-                </button>
-            </div>
-
-            <!-- PRODUCTS -->
-            <div class="product-grid" id="productGrid">
-                <!-- ===== TIKTOK SERVICES ===== -->
-                <div class="product-card selected" data-product="tiktok_followers" data-price="2.99" data-unit="1000" data-platform="tiktok" data-min="1000">
-                    <div class="icon">👥</div>
-                    <span class="platform-badge tiktok">TikTok</span>
-                    <div class="pname">TikTok Followers</div>
-                    <div class="pdesc">Real active followers</div>
-                    <div class="pprice">$2.99 <span>/1,000</span></div>
-                    <span class="min-badge">min 1,000</span>
-                    <div class="check"><i class="fas fa-check-circle"></i></div>
-                </div>
-                <div class="product-card" data-product="tiktok_likes" data-price="1.99" data-unit="1000" data-platform="tiktok" data-min="500">
-                    <div class="icon">❤️</div>
-                    <span class="platform-badge tiktok">TikTok</span>
-                    <div class="pname">TikTok Likes</div>
-                    <div class="pdesc">High-quality engagement</div>
-                    <div class="pprice">$1.99 <span>/1,000</span></div>
-                    <span class="min-badge">min 500</span>
-                    <div class="check"><i class="fas fa-check-circle"></i></div>
-                </div>
-                <div class="product-card" data-product="tiktok_views" data-price="0.99" data-unit="1000" data-platform="tiktok" data-min="500">
-                    <div class="icon">👀</div>
-                    <span class="platform-badge tiktok">TikTok</span>
-                    <div class="pname">TikTok Views</div>
-                    <div class="pdesc">Boost your video reach</div>
-                    <div class="pprice">$0.99 <span>/1,000</span></div>
-                    <span class="min-badge">min 500</span>
-                    <div class="check"><i class="fas fa-check-circle"></i></div>
-                </div>
-                <div class="product-card" data-product="tiktok_comments" data-price="4.99" data-unit="100" data-platform="tiktok" data-min="50">
-                    <div class="icon">💬</div>
-                    <span class="platform-badge tiktok">TikTok</span>
-                    <div class="pname">TikTok Comments</div>
-                    <div class="pdesc">Custom & engaging comments</div>
-                    <div class="pprice">$4.99 <span>/100</span></div>
-                    <span class="min-badge">min 50</span>
-                    <div class="check"><i class="fas fa-check-circle"></i></div>
-                </div>
-                <div class="product-card" data-product="tiktok_shares" data-price="3.99" data-unit="100" data-platform="tiktok" data-min="50">
-                    <div class="icon">🔄</div>
-                    <span class="platform-badge tiktok">TikTok</span>
-                    <div class="pname">TikTok Shares</div>
-                    <div class="pdesc">Increase viral potential</div>
-                    <div class="pprice">$3.99 <span>/100</span></div>
-                    <span class="min-badge">min 50</span>
-                    <div class="check"><i class="fas fa-check-circle"></i></div>
-                </div>
-                <div class="product-card" data-product="tiktok_live" data-price="5.99" data-unit="100" data-platform="tiktok" data-min="50">
-                    <div class="icon">🔴</div>
-                    <span class="platform-badge tiktok">TikTok</span>
-                    <div class="pname">TikTok Live Views</div>
-                    <div class="pdesc">Boost live stream viewers</div>
-                    <div class="pprice">$5.99 <span>/100</span></div>
-                    <span class="min-badge">min 50</span>
-                    <div class="check"><i class="fas fa-check-circle"></i></div>
-                </div>
-
-                <!-- ===== PUBG MOBILE SERVICES ===== -->
-                <div class="product-card" data-product="pubg_60" data-price="0.95" data-unit="60" data-platform="pubg" data-min="1">
-                    <div class="icon"><i class="fas fa-coins" style="color:#ffaa00;"></i></div>
-                    <span class="platform-badge pubg">PUBG</span>
-                    <div class="pname">60 UC Pack</div>
-                    <div class="pdesc">60 Unknown Cash</div>
-                    <div class="pprice">$0.95 <span>/60 UC</span></div>
-                    <span class="min-badge">min 1</span>
-                    <div class="check"><i class="fas fa-check-circle"></i></div>
-                </div>
-                <div class="product-card" data-product="pubg_325" data-price="4.65" data-unit="325" data-platform="pubg" data-min="1">
-                    <div class="icon"><i class="fas fa-coins" style="color:#ffaa00;"></i></div>
-                    <span class="platform-badge pubg">PUBG</span>
-                    <div class="pname">325 UC Pack</div>
-                    <div class="pdesc">300 + 25 Bonus UC</div>
-                    <div class="pprice">$4.65 <span>/325 UC</span></div>
-                    <span class="min-badge">min 1</span>
-                    <div class="check"><i class="fas fa-check-circle"></i></div>
-                </div>
-                <div class="product-card" data-product="pubg_660" data-price="9.25" data-unit="660" data-platform="pubg" data-min="1">
-                    <div class="icon"><i class="fas fa-coins" style="color:#ffaa00;"></i></div>
-                    <span class="platform-badge pubg">PUBG</span>
-                    <div class="pname">660 UC Pack</div>
-                    <div class="pdesc">600 + 60 Bonus UC</div>
-                    <div class="pprice">$9.25 <span>/660 UC</span></div>
-                    <span class="min-badge">min 1</span>
-                    <div class="check"><i class="fas fa-check-circle"></i></div>
-                </div>
-                <div class="product-card" data-product="pubg_1800" data-price="23.15" data-unit="1800" data-platform="pubg" data-min="1">
-                    <div class="icon"><i class="fas fa-coins" style="color:#ffaa00;"></i></div>
-                    <span class="platform-badge pubg">PUBG</span>
-                    <div class="pname">1,800 UC Pack</div>
-                    <div class="pdesc">1,500 + 300 Bonus UC</div>
-                    <div class="pprice">$23.15 <span>/1,800 UC</span></div>
-                    <span class="min-badge">min 1</span>
-                    <div class="check"><i class="fas fa-check-circle"></i></div>
-                </div>
-                <div class="product-card" data-product="pubg_3850" data-price="46.35" data-unit="3850" data-platform="pubg" data-min="1">
-                    <div class="icon"><i class="fas fa-coins" style="color:#ffaa00;"></i></div>
-                    <span class="platform-badge pubg">PUBG</span>
-                    <div class="pname">3,850 UC Pack</div>
-                    <div class="pdesc">3,000 + 850 Bonus UC</div>
-                    <div class="pprice">$46.35 <span>/3,850 UC</span></div>
-                    <span class="min-badge">min 1</span>
-                    <div class="check"><i class="fas fa-check-circle"></i></div>
-                </div>
-                <div class="product-card" data-product="pubg_8100" data-price="92.65" data-unit="8100" data-platform="pubg" data-min="1">
-                    <div class="icon"><i class="fas fa-coins" style="color:#ffaa00;"></i></div>
-                    <span class="platform-badge pubg">PUBG</span>
-                    <div class="pname">8,100 UC Pack</div>
-                    <div class="pdesc">6,000 + 2,100 Bonus UC</div>
-                    <div class="pprice">$92.65 <span>/8,100 UC</span></div>
-                    <span class="min-badge">min 1</span>
-                    <div class="check"><i class="fas fa-check-circle"></i></div>
-                </div>
-            </div>
-
-            <!-- ORDER FORM -->
-            <form class="order-form" id="orderForm">
-                <div class="field">
-                    <label><i class="fas fa-user"></i> Username / Player ID</label>
-                    <input type="text" id="username" placeholder="@username or player ID" required />
-                </div>
-
-                <div class="field">
-                    <label><i class="fas fa-hashtag"></i> Quantity</label>
-                    <input type="number" id="quantity" value="1" min="1" step="1" required />
-                    <span style="font-size:0.5rem; color:#333355; letter-spacing:0.3px;" id="minQuantityHint">Minimum: 1</span>
-                </div>
-
-                <div class="field full-width">
-                    <label><i class="fas fa-envelope"></i> Your Email</label>
-                    <input type="email" id="email" placeholder="you@email.com" required />
-                </div>
-
-                <div class="delivery-info" id="deliveryInfo">
-                    <i class="fas fa-truck-fast"></i>
-                    <span class="label">Estimated delivery:</span>
-                    <span class="time" id="deliveryTime">Instant - 5 mins</span>
-                    <span style="color:#333355; font-size:0.6rem; margin-left:auto; letter-spacing:0.3px;" id="deliveryNote">⚡ Instant</span>
-                </div>
-
-                <div class="order-summary">
-                    <div>
-                        <div class="total-label">Total</div>
-                        <div style="font-size:0.6rem; color:#333355; letter-spacing:0.3px;" id="orderBreakdown">1 x UC Pack</div>
-                    </div>
-                    <div style="display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap;">
-                        <div class="total-price">$<span id="totalPrice">0.95</span></div>
-                        <button type="submit" class="submit-btn" id="submitBtn">
-                            <i class="fas fa-bolt"></i> Place Order
-                        </button>
-                    </div>
-                </div>
-            </form>
+    <header class="bg-slate-950/90 cyber-border rounded-xl p-3 flex justify-between items-center mb-2">
+        <div class="flex items-center space-x-2 space-x-reverse">
+            <div class="w-3 h-3 bg-cyan-400 rounded-full animate-ping" id="status-indicator"></div>
+            <h1 class="text-xs md:text-sm font-bold text-cyan-400 orbitron">ULTRA AI GUARD v5.0 (3D VECTOR)</h1>
         </div>
+        <div class="text-[11px] text-slate-400 font-mono" id="live-time">00:00:00</div>
+    </header>
 
-        <!-- ORDERS HISTORY -->
-        <div class="orders-section">
-            <h3><i class="fas fa-clock-rotate-left"></i> Order History</h3>
-            <div class="orders-table-wrap">
-                <div id="ordersContainer">
-                    <div class="empty-state">
-                        <i class="fas fa-inbox"></i>
-                        <span>No orders yet. Place your first order!</span>
-                    </div>
+    <main class="grid grid-cols-1 md:grid-cols-3 gap-2 flex-grow">
+        
+        <div class="md:col-span-2 bg-slate-950 cyber-border rounded-xl p-2 flex flex-col justify-between relative overflow-hidden min-h-[320px]" id="camera-box">
+            <video id="webcam" class="hidden" playsinline muted></video>
+
+            <div class="relative w-full h-full min-h-[260px] bg-black rounded-lg overflow-hidden flex items-center justify-center">
+                <canvas id="output_canvas" class="w-full h-full object-cover unmirror"></canvas>
+                
+                <div id="guide-overlay" class="absolute top-4 bg-slate-900/90 border border-cyan-400 text-cyan-300 px-4 py-2 rounded-xl text-center shadow-2xl hidden font-bold text-xs orbitron">
+                    <span id="guide-text">پشکنینی Liveness: تکایە جارێک چاوەکانت بگرە... 👁️</span>
                 </div>
+
+                <div id="alert-badge" class="absolute top-4 bg-rose-600 text-white px-4 py-1.5 rounded-full font-bold text-xs uppercase shadow-xl animate-bounce hidden orbitron">
+                    🚨 INTRUDER / کەسی نەناسراو!
+                </div>
+
+                <div id="standby-text" class="absolute text-slate-500 text-xs font-mono text-center">
+                    سیستەم ناچالاکە<br><span class="text-[10px] text-cyan-400">دوگمەی "دەستپێکردن" داگرە</span>
+                </div>
+            </div>
+
+            <div id="status-text" class="w-full py-1.5 text-center text-[11px] font-mono text-slate-400">
+                چاوەڕوانی کارپێکردنی مۆدێلی TensorFlow...
             </div>
         </div>
 
-        <!-- TOAST -->
-        <div class="toast" id="toast"><i class="fas fa-check-circle"></i> <span id="toastMsg">Order placed!</span></div>
+        <div class="bg-slate-950 cyber-border rounded-xl p-3 flex flex-col justify-between space-y-3">
+            <div>
+                <h2 class="font-bold text-xs text-cyan-400 orbitron border-b border-slate-800 pb-2 mb-3">AI ADVANCED CONTROL</h2>
+                
+                <div class="grid grid-cols-2 gap-2 mb-3">
+                    <button onclick="startSystem()" id="btn-start" class="bg-emerald-600/30 hover:bg-emerald-600/50 text-emerald-300 border border-emerald-500/40 font-bold py-2 px-3 rounded-lg text-xs transition">
+                        ▶️ دەستپێکردن
+                    </button>
+                    <button onclick="stopSystem()" id="btn-stop" class="bg-rose-600/30 text-rose-400 font-bold py-2 px-3 rounded-lg border border-rose-500/30 text-xs transition disabled:opacity-30" disabled>
+                        ⏸️ وەستاندن
+                    </button>
+                </div>
 
-        <!-- SIGNATURE -->
-        <div class="signature">
-            ⚡ <span>Ahmad</span> • NEON NEXUS v3.0 ⚡
+                <div class="bg-slate-900 p-2.5 rounded-lg border border-slate-800 mb-3 space-y-2">
+                    <span class="text-[11px] text-slate-300 font-semibold block">تۆمارکردنی زیو (3D Face ID + Liveness):</span>
+                    <button onclick="start3DRegistration()" id="btn-register" class="w-full bg-cyan-600/30 hover:bg-cyan-600/50 text-cyan-300 border border-cyan-500/40 font-bold py-2 px-2 rounded text-xs transition orbitron">
+                        👤 SCAN & REGISTER MY 3D FACE
+                    </button>
+                    <div id="owner-status" class="text-[10px] text-slate-500 text-center font-mono">هیچ نەکراوە (پێویستی بە سڕینەوەیە)</div>
+                </div>
+
+                <div class="flex justify-between items-center text-xs pt-2 border-t border-slate-800">
+                    <span class="text-slate-300">دەنگی ئاگاداری:</span>
+                    <button onclick="toggleSound()" id="btn-sound" class="bg-slate-900 border border-slate-800 px-2 py-1 rounded text-cyan-400">🔊 چالاکە</button>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 p-2.5 rounded-lg border border-slate-800 font-mono text-[11px] space-y-1">
+                <div class="flex justify-between"><span>3D Landmarks:</span><strong class="text-cyan-400">468 Points</strong></div>
+                <div class="flex justify-between"><span>وێنەگیراو:</span><strong class="text-emerald-400" id="snaps-cnt">0</strong></div>
+            </div>
         </div>
-    </div>
+
+    </main>
+
+    <footer class="bg-slate-950 cyber-border rounded-xl p-2.5 mt-2">
+        <div class="flex justify-between items-center mb-1.5">
+            <h3 class="text-xs font-bold text-slate-300 orbitron">CAPTURED THREATS & LOGS</h3>
+            <button onclick="clearCaptures()" class="text-[10px] text-rose-400 hover:underline">Clear</button>
+        </div>
+        <div id="captures-list" class="flex space-x-2 space-x-reverse overflow-x-auto p-1 min-h-[70px] items-center">
+            <p id="empty-msg" class="text-slate-600 text-[11px] mx-auto">هیچ وێنەیەک پاشەکەوت نەکراوە</p>
+        </div>
+    </footer>
 
     <script>
-        (function() {
-            'use strict';
+        const videoElement = document.getElementById('webcam');
+        const canvasElement = document.getElementById('output_canvas');
+        const canvasCtx = canvasElement.getContext('2d');
+        const statusText = document.getElementById('status-text');
+        const alertBadge = document.getElementById('alert-badge');
+        const guideOverlay = document.getElementById('guide-overlay');
+        const guideText = document.getElementById('guide-text');
+        const capturesList = document.getElementById('captures-list');
 
-            // === MATRIX RAIN ===
-            const canvas = document.getElementById('matrixCanvas');
-            const ctx = canvas.getContext('2d');
-            let w, h, columns, drops;
+        let detector = null;
+        let isSystemRunning = false;
+        let isSoundEnabled = true;
 
-            function resizeCanvas() {
-                w = canvas.width = window.innerWidth;
-                h = canvas.height = window.innerHeight;
-                columns = Math.floor(w / 20);
-                drops = Array(columns).fill(1);
-            }
-            resizeCanvas();
-            window.addEventListener('resize', resizeCanvas);
+        // Vector Database for Registered Owner
+        let ownerVector3D = null;
+        let isRegistering3D = false;
+        let blinkDetected = false;
 
-            function drawMatrix() {
-                ctx.fillStyle = 'rgba(5, 5, 15, 0.05)';
-                ctx.fillRect(0, 0, w, h);
-                ctx.fillStyle = '#ffaa00';
-                ctx.font = '14px monospace';
-                for (let i = 0; i < drops.length; i++) {
-                    const text = String.fromCharCode(0x30A0 + Math.random() * 96);
-                    ctx.fillText(text, i * 20, drops[i] * 20);
-                    if (drops[i] * 20 > h && Math.random() > 0.975) drops[i] = 0;
-                    drops[i]++;
-                }
-            }
-            setInterval(drawMatrix, 50);
+        let totalSnaps = 0;
+        let lastSnapTime = 0;
 
-            // === TELEGRAM BOT ===
-            // ⚠️ REPLACE WITH YOUR NEW TOKEN AFTER REVOKING!
-            const TELEGRAM_BOT_TOKEN = '8940054084:AAHCZ8EGOWxH-OF6OQazZsYxJTEanekdk7o';
-            const TELEGRAM_CHAT_ID = '8545337375';
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-            // === PRODUCT DATA ===
-            const PRODUCTS = {
-                // TikTok
-                tiktok_followers: { name: 'TikTok Followers', icon: '👥', price: 2.99, unit: 1000, unitLabel: '1,000', platform: 'tiktok', platformLabel: 'TikTok', min: 1000 },
-                tiktok_likes: { name: 'TikTok Likes', icon: '❤️', price: 1.99, unit: 1000, unitLabel: '1,000', platform: 'tiktok', platformLabel: 'TikTok', min: 500 },
-                tiktok_views: { name: 'TikTok Views', icon: '👀', price: 0.99, unit: 1000, unitLabel: '1,000', platform: 'tiktok', platformLabel: 'TikTok', min: 500 },
-                tiktok_comments: { name: 'TikTok Comments', icon: '💬', price: 4.99, unit: 100, unitLabel: '100', platform: 'tiktok', platformLabel: 'TikTok', min: 50 },
-                tiktok_shares: { name: 'TikTok Shares', icon: '🔄', price: 3.99, unit: 100, unitLabel: '100', platform: 'tiktok', platformLabel: 'TikTok', min: 50 },
-                tiktok_live: { name: 'TikTok Live Views', icon: '🔴', price: 5.99, unit: 100, unitLabel: '100', platform: 'tiktok', platformLabel: 'TikTok', min: 50 },
-                // PUBG
-                pubg_60: { name: '60 UC Pack', icon: '🪙', price: 0.95, unit: 60, unitLabel: '60 UC', platform: 'pubg', platformLabel: 'PUBG', min: 1 },
-                pubg_325: { name: '325 UC Pack', icon: '🪙', price: 4.65, unit: 325, unitLabel: '325 UC', platform: 'pubg', platformLabel: 'PUBG', min: 1 },
-                pubg_660: { name: '660 UC Pack', icon: '🪙', price: 9.25, unit: 660, unitLabel: '660 UC', platform: 'pubg', platformLabel: 'PUBG', min: 1 },
-                pubg_1800: { name: '1,800 UC Pack', icon: '🪙', price: 23.15, unit: 1800, unitLabel: '1,800 UC', platform: 'pubg', platformLabel: 'PUBG', min: 1 },
-                pubg_3850: { name: '3,850 UC Pack', icon: '🪙', price: 46.35, unit: 3850, unitLabel: '3,850 UC', platform: 'pubg', platformLabel: 'PUBG', min: 1 },
-                pubg_8100: { name: '8,100 UC Pack', icon: '🪙', price: 92.65, unit: 8100, unitLabel: '8,100 UC', platform: 'pubg', platformLabel: 'PUBG', min: 1 }
-            };
+        setInterval(() => {
+            document.getElementById('live-time').innerText = new Date().toLocaleTimeString();
+        }, 1000);
 
-            // === STATE ===
-            let orders = [];
-            let selectedProduct = 'tiktok_followers';
-            let currentFilter = 'all';
-            const STORAGE_KEY = 'ahmad_nexus_orders';
+        function playSoftChime() {
+            if (!isSoundEnabled) return;
+            if (audioCtx.state === 'suspended') audioCtx.resume();
 
-            // === DOM REFS ===
-            const productCards = document.querySelectorAll('.product-card');
-            const filterButtons = document.querySelectorAll('.filter-btn');
-            const usernameInput = document.getElementById('username');
-            const quantityInput = document.getElementById('quantity');
-            const emailInput = document.getElementById('email');
-            const totalPriceEl = document.getElementById('totalPrice');
-            const orderBreakdown = document.getElementById('orderBreakdown');
-            const deliveryTimeEl = document.getElementById('deliveryTime');
-            const deliveryNote = document.getElementById('deliveryNote');
-            const minQuantityHint = document.getElementById('minQuantityHint');
-            const orderForm = document.getElementById('orderForm');
-            const ordersContainer = document.getElementById('ordersContainer');
-            const totalOrdersEl = document.getElementById('totalOrders');
-            const totalSpentEl = document.getElementById('totalSpent');
-            const submitBtn = document.getElementById('submitBtn');
-            const toast = document.getElementById('toast');
-            const toastMsg = document.getElementById('toastMsg');
-            let toastTimeout = null;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
+            osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.12); // A5
 
-            // === HELPERS ===
-            function getProduct() { return PRODUCTS[selectedProduct]; }
-            function getMinQuantity() { const p = getProduct(); return p ? p.min : 1; }
+            gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.2);
 
-            function calculatePrice(product, quantity) {
-                return Math.ceil(quantity / product.unit) * product.price;
-            }
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.2);
+        }
 
-            function getDeliveryTime(quantity) {
-                if (quantity > 5) return '5-15 mins';
-                return 'Instant - 5 mins';
-            }
+        // Initialize TensorFlow High-Accuracy Detector
+        async function initEngine() {
+            statusText.innerText = "بارکردنی ئەلگۆریتمەکانی TensorFlow 3D Engine...";
+            await tf.setBackend('webgl');
+            
+            const model = faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh;
+            const detectorConfig = { runtime: 'tfjs', maxFaces: 1, refineLandmarks: true };
+            detector = await faceLandmarksDetection.createDetector(model, detectorConfig);
 
-            function getDeliveryNote(quantity) {
-                if (quantity > 5) return '⚡ Bulk (5-15m)';
-                return '⚡ Instant';
-            }
-
-            function formatCurrency(amount) { return amount.toFixed(2); }
-
-            function generateOrderId() {
-                return 'NX-' + Date.now().toString(36).toUpperCase() + '-' +
-                    Math.random().toString(36).substr(2, 5).toUpperCase();
-            }
-
-            function getStatusBadge(status) {
-                const map = { 'pending': 'pending', 'processing': 'processing', 'completed': 'completed', 'cancelled': 'cancelled' };
-                return map[status] || 'pending';
-            }
-
-            // === FILTER ===
-            function filterProducts(filter) {
-                currentFilter = filter;
-                productCards.forEach(card => {
-                    const platform = card.dataset.platform;
-                    card.classList.toggle('hidden', filter !== 'all' && platform !== filter);
-                });
-
-                filterButtons.forEach(btn => {
-                    btn.classList.remove('active', 'active-tiktok', 'active-pubg', 'active-all');
-                    if (btn.dataset.filter === filter) {
-                        btn.classList.add('active');
-                        const cls = 'active-' + (filter === 'all' ? 'all' : filter);
-                        btn.classList.add(cls);
-                    }
-                });
-
-                const selectedCard = document.querySelector('.product-card.selected');
-                if (selectedCard && selectedCard.classList.contains('hidden')) {
-                    const firstVisible = document.querySelector('.product-card:not(.hidden)');
-                    if (firstVisible) {
-                        productCards.forEach(c => c.classList.remove('selected'));
-                        firstVisible.classList.add('selected');
-                        selectedProduct = firstVisible.dataset.product;
-                        updateOrderSummary();
-                    }
-                }
-            }
-
-            // === COUNTS ===
-            function updateCounts() {
-                const counts = { all: 0, tiktok: 0, pubg: 0 };
-                productCards.forEach(card => {
-                    const p = card.dataset.platform;
-                    counts.all++;
-                    if (counts[p] !== undefined) counts[p]++;
-                });
-                document.getElementById('countAll').textContent = counts.all;
-                document.getElementById('countTiktok').textContent = counts.tiktok;
-                document.getElementById('countPubg').textContent = counts.pubg;
-            }
-
-            // === TELEGRAM ===
-            function sendToTelegram(order) {
-                const product = PRODUCTS[order.productKey];
-                const msg = `
-🔥 *AHMAD'S NEXUS — NEW ORDER* 🔥
-
-📋 *Order ID:* ${order.id}
-👤 *Profile:*
-  • Platform: ${order.platform}
-  • Username: @${order.username}
-  • Email: ${order.email}
-
-📦 *Order:*
-  • Service: ${product.icon} ${product.name}
-  • Quantity: ${order.quantity.toLocaleString()}
-  • Price: $${order.price.toFixed(2)}
-  • Delivery: ${order.deliveryTime}
-
-🔗 *Shop:* Ahmad's Nexus
-📅 *Time:* ${new Date().toLocaleString()}
-                `;
-                fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: msg, parse_mode: 'Markdown' })
-                }).catch(() => {});
-            }
-
-            // === UPDATE UI ===
-            function updateOrderSummary() {
-                const product = getProduct();
-                const quantity = parseInt(quantityInput.value) || 0;
-                const minQty = product ? product.min : 1;
-                const price = calculatePrice(product, quantity);
-                const units = Math.ceil(quantity / product.unit);
-
-                totalPriceEl.textContent = formatCurrency(price);
-                orderBreakdown.textContent = `${quantity} x ${product.name} (${units} × ${product.unitLabel})`;
-                minQuantityHint.textContent = `Minimum: ${minQty}`;
-                minQuantityHint.style.color = (quantity < minQty && quantity > 0) ? '#ef4444' : '#333355';
-
-                const time = getDeliveryTime(quantity);
-                deliveryTimeEl.textContent = time;
-                deliveryTimeEl.className = 'time' + (quantity > 5 ? ' warning' : '');
-                deliveryNote.textContent = getDeliveryNote(quantity);
-
-                submitBtn.disabled = quantity < minQty || quantity < 1;
-            }
-
-            // === RENDER ORDERS ===
-            function renderOrders() {
-                if (!orders.length) {
-                    ordersContainer.innerHTML = `
-                        <div class="empty-state">
-                            <i class="fas fa-inbox"></i>
-                            <span>No orders yet. Place your first order!</span>
-                        </div>
-                    `;
-                    return;
-                }
-
-                let html = `
-                    <table class="orders-table">
-                        <thead><tr>
-                            <th>Order ID</th><th>Service</th><th>Platform</th>
-                            <th>Username</th><th>Qty</th><th>Price</th><th>Status</th><th>Delivery</th>
-                        </tr></thead><tbody>
-                `;
-                orders.slice().reverse().forEach(o => {
-                    const sc = getStatusBadge(o.status);
-                    html += `
-                        <tr>
-                            <td style="font-family:monospace;font-size:0.6rem;color:#555577;">${o.id}</td>
-                            <td><span style="color:#ffaa00;">${o.productIcon} ${o.productName}</span></td>
-                            <td><span class="platform-badge ${o.platform.toLowerCase()}">${o.platform}</span></td>
-                            <td><span style="color:#ffffff;">@${o.username}</span></td>
-                            <td>${o.quantity.toLocaleString()}</td>
-                            <td>$${o.price.toFixed(2)}</td>
-                            <td><span class="status ${sc}">${o.status}</span></td>
-                            <td class="delivery-time"><i class="fas fa-clock"></i> ${o.deliveryTime}</td>
-                        </tr>
-                    `;
-                });
-                html += '</tbody></table>';
-                ordersContainer.innerHTML = html;
-            }
-
-            // === STATS ===
-            function updateStats() {
-                totalOrdersEl.textContent = orders.length;
-                let total = 0;
-                orders.forEach(o => total += o.price);
-                totalSpentEl.textContent = '$' + total.toFixed(2);
-            }
-
-            // === STORAGE ===
-            function saveState() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(orders)); } catch (e) {} }
-            function loadState() {
-                try {
-                    const data = localStorage.getItem(STORAGE_KEY);
-                    if (data) { orders = JSON.parse(data); return true; }
-                } catch (e) {}
-                return false;
-            }
-
-            // === TOAST ===
-            function showToast(msg, err = false) {
-                toastMsg.textContent = msg;
-                toast.className = 'toast' + (err ? ' error' : '');
-                toast.querySelector('i').className = err ? 'fas fa-exclamation-circle' : 'fas fa-check-circle';
-                toast.classList.add('show');
-                if (toastTimeout) clearTimeout(toastTimeout);
-                toastTimeout = setTimeout(() => toast.classList.remove('show'), 4000);
-            }
-
-            // === PLACE ORDER ===
-            function placeOrder(e) {
-                e.preventDefault();
-                const username = usernameInput.value.trim().replace(/^@/, '');
-                const quantity = parseInt(quantityInput.value);
-                const email = emailInput.value.trim();
-                const product = getProduct();
-                const minQty = product ? product.min : 1;
-
-                if (!username) { showToast('Please enter your username/player ID', true); return; }
-                if (!quantity || quantity < minQty) { showToast(`Minimum quantity is ${minQty}`, true); return; }
-                if (!email || !email.includes('@')) { showToast('Please enter a valid email', true); return; }
-
-                const price = calculatePrice(product, quantity);
-                const deliveryTime = getDeliveryTime(quantity);
-
-                const order = {
-                    id: generateOrderId(),
-                    productKey: selectedProduct,
-                    productName: product.name,
-                    productIcon: product.icon,
-                    platform: product.platformLabel,
-                    username, quantity, email,
-                    price, status: 'pending',
-                    deliveryTime,
-                    createdAt: new Date().toISOString()
-                };
-
-                orders.push(order);
-                saveState();
-                renderOrders();
-                updateStats();
-                sendToTelegram(order);
-
-                usernameInput.value = '';
-                quantityInput.value = 1;
-                emailInput.value = '';
-                updateOrderSummary();
-                showToast(`🔥 Order #${order.id} placed! ${quantity} × ${product.name} → @${username}`);
-            }
-
-            // === SELECTION ===
-            productCards.forEach(card => {
-                card.addEventListener('click', function() {
-                    if (this.classList.contains('hidden')) return;
-                    productCards.forEach(c => c.classList.remove('selected'));
-                    this.classList.add('selected');
-                    selectedProduct = this.dataset.product;
-                    quantityInput.value = parseInt(this.dataset.min) || 1;
-                    updateOrderSummary();
-                });
+            const camera = new Camera(videoElement, {
+                onFrame: async () => {
+                    if (isSystemRunning) processFrame();
+                },
+                facingMode: 'user',
+                width: 640,
+                height: 480
             });
+            camera.start();
+            statusText.innerText = "سیستەم ئامادەیە - تەنها دەستپێکردن داگرە.";
+        }
 
-            // === FILTER CLICK ===
-            filterButtons.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    filterProducts(this.dataset.filter);
-                });
-            });
+        // Calculate Eye Aspect Ratio (EAR) for Blink Liveness Check
+        function checkEyeBlink(keypoints) {
+            const p1 = keypoints[159], p2 = keypoints[145]; // Left eye top/bottom
+            const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+            return dist < 4; // If distance is very small, eye is closed (Blink)
+        }
 
-            // === INIT ===
-            function init() {
-                loadState();
-                renderOrders();
-                updateStats();
-                updateCounts();
-                quantityInput.value = Math.max(getMinQuantity(), 1);
-                updateOrderSummary();
-                quantityInput.addEventListener('input', updateOrderSummary);
-                orderForm.addEventListener('submit', placeOrder);
-                filterProducts('all');
+        // Extract Normalized 3D Feature Vector
+        function extract3DVector(keypoints) {
+            const nose = keypoints[1];
+            let vector = [];
+            for (let i = 0; i < keypoints.length; i += 10) { // Normalize relative to nose
+                vector.push((keypoints[i].x - nose.x).toFixed(3));
+                vector.push((keypoints[i].y - nose.y).toFixed(3));
             }
+            return vector;
+        }
 
-            init();
-        })();
+        // Vector Cosine Similarity Distance Algorithm
+        function compareVectors(vecA, vecB) {
+            let dot = 0, normA = 0, normB = 0;
+            for (let i = 0; i < vecA.length; i++) {
+                dot += vecA[i] * vecB[i];
+                normA += vecA[i] * vecA[i];
+                normB += vecB[i] * vecB[i];
+            }
+            return dot / (Math.sqrt(normA) * Math.sqrt(normB));
+        }
+
+        // Start 3D Liveness Scan
+        function start3DRegistration() {
+            if (!isSystemRunning) {
+                alert("پێشتر دوگمەی دەستپێکردن داگرە!");
+                return;
+            }
+            isRegistering3D = true;
+            blinkDetected = false;
+            guideOverlay.classList.remove('hidden');
+            guideText.innerText = "تکایە جارێک چاوەکانت بگریت (پشکنینی زیندوبوون) 👁️";
+        }
+
+        // Process Frames with TensorFlow
+        async function processFrame() {
+            const faces = await detector.estimateFaces(videoElement, { flipHorizontal: false });
+
+            canvasElement.width = videoElement.videoWidth;
+            canvasElement.height = videoElement.videoHeight;
+
+            canvasCtx.save();
+            canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+            canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+
+            if (faces.length > 0) {
+                const keypoints = faces[0].keypoints;
+                const box = faces[0].box;
+
+                // Check Blink Detection for Liveness
+                if (isRegistering3D) {
+                    if (checkEyeBlink(keypoints)) {
+                        blinkDetected = true;
+                        guideText.innerText = "چاوگرتنەکە تۆمارکرا! بە ڕاستی تەماشاکە...";
+                    }
+                    if (blinkDetected && !checkEyeBlink(keypoints)) { // Eye reopened
+                        ownerVector3D = extract3DVector(keypoints);
+                        isRegistering3D = false;
+                        guideOverlay.classList.add('hidden');
+                        document.getElementById('owner-status').innerText = "✅ نەخشەی 3D + Liveness بەسەرکەوتوویی پاشەکەوتکرا!";
+                        document.getElementById('owner-status').className = "text-[10px] text-emerald-400 font-bold text-center font-mono";
+                        playSoftChime();
+                    }
+                }
+
+                // Recognize Recognized Face
+                let isOwner = false;
+                if (ownerVector3D !== null) {
+                    const currentVec = extract3DVector(keypoints);
+                    const similarity = compareVectors(ownerVector3D, currentVec);
+                    if (similarity > 0.92) { // 92% Vector match accuracy
+                        isOwner = true;
+                    }
+                }
+
+                // Draw 3D Box & Points Effect
+                const x = box.xMin, y = box.yMin, w = box.width, h = box.height;
+                canvasCtx.strokeStyle = isOwner ? '#22c55e' : (isRegistering3D ? '#38bdf8' : '#ff0055');
+                canvasCtx.lineWidth = 3;
+                canvasCtx.strokeRect(x, y, w, h);
+
+                // Draw Feature Mesh
+                canvasCtx.fillStyle = isOwner ? '#22c55e' : '#ff0055';
+                for (let i = 0; i < keypoints.length; i += 20) {
+                    canvasCtx.fillRect(keypoints[i].x, keypoints[i].y, 2, 2);
+                }
+
+                // Labeling
+                canvasCtx.save();
+                canvasCtx.scale(-1, 1);
+                canvasCtx.font = 'bold 13px Orbitron';
+                canvasCtx.fillStyle = isOwner ? '#22c55e' : (isRegistering3D ? '#38bdf8' : '#ff0055');
+                
+                let text = "UNKNOWN PERSON";
+                if (isRegistering3D) text = "LIVENESS SCAN...";
+                else if (isOwner) text = "AUTHORIZED USER (3D MATCH)";
+
+                canvasCtx.fillText(text, -(x + w), y > 20 ? y - 10 : 20);
+                canvasCtx.restore();
+
+                const camBox = document.getElementById('camera-box');
+
+                if (!isOwner && ownerVector3D !== null && !isRegistering3D) {
+                    alertBadge.classList.remove('hidden');
+                    camBox.classList.add('cyber-alert');
+                    statusText.innerText = "🚨 ئاگاداری: کەسێکی نەناسراو دۆزرایەوە!";
+                    statusText.className = "w-full py-1.5 text-center text-[11px] font-mono text-rose-500 font-bold";
+                    playSoftChime();
+                } else if (isOwner) {
+                    alertBadge.classList.add('hidden');
+                    camBox.classList.remove('cyber-alert');
+                    statusText.innerText = "خاوەنەکەی ناسرایەوە (دەستگەیشتنی 3D سەلامەتە)";
+                    statusText.className = "w-full py-1.5 text-center text-[11px] font-mono text-emerald-400";
+                }
+
+                // Snapshots
+                const now = Date.now();
+                if (now - lastSnapTime > 3000) {
+                    captureCrop(x, y, w, h);
+                    lastSnapTime = now;
+                }
+            } else {
+                alertBadge.classList.add('hidden');
+                document.getElementById('camera-box').classList.remove('cyber-alert');
+                statusText.innerText = "هیچ کەسێک لە مەودای کامێراکەدا نییە";
+                statusText.className = "w-full py-1.5 text-center text-[11px] font-mono text-slate-400";
+            }
+            canvasCtx.restore();
+        }
+
+        function captureCrop(x, y, w, h) {
+            const emptyMsg = document.getElementById('empty-msg');
+            if (emptyMsg) emptyMsg.remove();
+
+            const cropCanvas = document.createElement('canvas');
+            const cropCtx = cropCanvas.getContext('2d');
+            cropCanvas.width = 100;
+            cropCanvas.height = 100;
+
+            cropCtx.drawImage(canvasElement, x, y, w, h, 0, 0, 100, 100);
+            const imgUrl = cropCanvas.toDataURL('image/png');
+
+            const item = document.createElement('img');
+            item.src = imgUrl;
+            item.className = "w-14 h-14 object-cover rounded-lg border border-slate-700 flex-shrink-0";
+
+            capturesList.prepend(item);
+            totalSnaps++;
+            document.getElementById('snaps-cnt').innerText = totalSnaps;
+        }
+
+        async function startSystem() {
+            if (!detector) await initEngine();
+            isSystemRunning = true;
+
+            document.getElementById('standby-text').classList.add('hidden');
+            document.getElementById('btn-start').disabled = true;
+            document.getElementById('btn-start').classList.add('opacity-30');
+            document.getElementById('btn-stop').disabled = false;
+            document.getElementById('btn-stop').classList.remove('opacity-30');
+
+            document.getElementById('status-indicator').className = "w-3 h-3 bg-cyan-400 rounded-full animate-ping";
+        }
+
+        function stopSystem() {
+            isSystemRunning = false;
+            canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+            document.getElementById('standby-text').classList.remove('hidden');
+            alertBadge.classList.add('hidden');
+            guideOverlay.classList.add('hidden');
+
+            document.getElementById('btn-start').disabled = false;
+            document.getElementById('btn-start').classList.remove('opacity-30');
+            document.getElementById('btn-stop').disabled = true;
+            document.getElementById('btn-stop').classList.add('opacity-30');
+
+            document.getElementById('status-indicator').className = "w-3 h-3 bg-rose-500 rounded-full";
+            statusText.innerText = "سیستەمەکە وەستا.";
+        }
+
+        function toggleSound() {
+            isSoundEnabled = !isSoundEnabled;
+            document.getElementById('btn-sound').innerText = isSoundEnabled ? "🔊 چالاکە" : "🔇 بێدەنگ";
+        }
+
+        function clearCaptures() {
+            capturesList.innerHTML = '<p id="empty-msg" class="text-slate-600 text-[11px] mx-auto">هیچ وێنەیەک پاشەکەوت نەکراوە</p>';
+            totalSnaps = 0;
+            document.getElementById('snaps-cnt').innerText = "0";
+        }
     </script>
 </body>
 </html>
