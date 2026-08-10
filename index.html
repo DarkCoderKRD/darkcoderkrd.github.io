@@ -41,9 +41,6 @@
             position: relative;
         }
 
-        /* ============================================
-           ANIMATED BACKGROUND
-           ============================================ */
         .bg-animation {
             position: fixed;
             top: 0;
@@ -99,7 +96,6 @@
             75% { transform: translate(30px, -20px) scale(1.05); }
         }
 
-        /* Grid overlay */
         .bg-grid {
             position: fixed;
             top: 0;
@@ -114,9 +110,6 @@
             pointer-events: none;
         }
 
-        /* ============================================
-           MAIN WRAPPER
-           ============================================ */
         .main-wrapper {
             position: relative;
             z-index: 1;
@@ -125,9 +118,6 @@
             padding: 30px 24px 60px;
         }
 
-        /* ============================================
-           TOP BAR
-           ============================================ */
         .top-bar {
             display: flex;
             justify-content: space-between;
@@ -213,9 +203,6 @@
             font-weight: 700;
         }
 
-        /* ============================================
-           HERO SECTION
-           ============================================ */
         .hero {
             text-align: center;
             padding: 40px 20px 20px;
@@ -282,9 +269,6 @@
             font-weight: 400;
         }
 
-        /* ============================================
-           SEARCH SECTION
-           ============================================ */
         .search-section {
             margin: 20px auto 0;
             max-width: 820px;
@@ -306,7 +290,6 @@
             box-shadow: 0 30px 80px rgba(108, 92, 231, 0.15);
         }
 
-        /* Type toggle - BIG */
         .type-toggle {
             display: flex;
             gap: 8px;
@@ -349,7 +332,6 @@
             color: var(--text-primary);
         }
 
-        /* Search input - BIG */
         .search-box {
             display: flex;
             gap: 12px;
@@ -417,7 +399,6 @@
             transform: none;
         }
 
-        /* Search helpers */
         .search-helpers {
             display: flex;
             justify-content: space-between;
@@ -461,9 +442,6 @@
             color: var(--text-primary);
         }
 
-        /* ============================================
-           RESULTS AREA - BIG
-           ============================================ */
         .result-area {
             margin-top: 32px;
             min-height: 120px;
@@ -547,7 +525,6 @@
             font-weight: 600;
         }
 
-        /* Breach stats - BIG */
         .breach-stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -578,7 +555,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* Breach tags - BIG */
         .breach-tags {
             display: flex;
             flex-wrap: wrap;
@@ -633,9 +609,6 @@
             margin-right: 8px;
         }
 
-        /* ============================================
-           ERROR
-           ============================================ */
         .error-msg {
             background: rgba(255, 107, 107, 0.06);
             border: 1px solid rgba(255, 107, 107, 0.12);
@@ -652,9 +625,6 @@
             font-size: 22px;
         }
 
-        /* ============================================
-           FOOTER
-           ============================================ */
         .footer {
             margin-top: 50px;
             text-align: center;
@@ -682,9 +652,6 @@
             color: var(--border-color);
         }
 
-        /* ============================================
-           RESPONSIVE
-           ============================================ */
         @media (max-width: 768px) {
             .top-bar {
                 padding: 14px 18px;
@@ -788,9 +755,6 @@
 </head>
 <body>
 
-    <!-- ============================================
-    ANIMATED BACKGROUND
-    ============================================ -->
     <div class="bg-animation">
         <div class="orb"></div>
         <div class="orb"></div>
@@ -798,14 +762,8 @@
     </div>
     <div class="bg-grid"></div>
 
-    <!-- ============================================
-    MAIN WRAPPER
-    ============================================ -->
     <div class="main-wrapper">
 
-        <!-- ============================================
-        TOP BAR
-        ============================================ -->
         <header class="top-bar">
             <div class="brand">
                 <div class="logo-icon"><i class="fas fa-shield-halved"></i></div>
@@ -823,9 +781,6 @@
             </div>
         </header>
 
-        <!-- ============================================
-        HERO
-        ============================================ -->
         <section class="hero">
             <div class="badge-label">
                 <i class="fas fa-bolt"></i> ENTERPRISE GRADE
@@ -855,14 +810,10 @@
             </div>
         </section>
 
-        <!-- ============================================
-        SEARCH SECTION
-        ============================================ -->
         <div class="search-section">
 
             <div class="search-card">
 
-                <!-- Type Toggle -->
                 <div class="type-toggle" id="typeToggle">
                     <button class="active" data-type="email">
                         <i class="fas fa-envelope"></i> Email Address
@@ -872,7 +823,6 @@
                     </button>
                 </div>
 
-                <!-- Search Box -->
                 <div class="search-box">
                     <span class="input-icon"><i class="fas fa-search"></i></span>
                     <input type="text" id="searchInput" placeholder="Enter email or phone with country code..." />
@@ -881,7 +831,6 @@
                     </button>
                 </div>
 
-                <!-- Helpers -->
                 <div class="search-helpers">
                     <span class="hint">
                         <i class="fas fa-lock"></i> 256-bit encrypted · Private
@@ -896,11 +845,7 @@
 
             </div>
 
-            <!-- ============================================
-            RESULTS AREA
-            ============================================ -->
             <div class="result-area" id="resultArea">
-                <!-- Empty state: show nothing or a subtle prompt -->
                 <div style="text-align: center; padding: 30px 0; color: var(--text-muted);">
                     <i class="fas fa-shield" style="font-size: 32px; display: block; margin-bottom: 12px; opacity: 0.3;"></i>
                     <span style="font-size: 15px;">Enter credentials above to begin scanning</span>
@@ -909,9 +854,6 @@
 
         </div>
 
-        <!-- ============================================
-        FOOTER
-        ============================================ -->
         <footer class="footer">
             <span>© 2026 DataLeak Sentinel</span>
             <span class="divider">|</span>
@@ -926,9 +868,6 @@
 
     </div>
 
-    <!-- ============================================
-    JAVASCRIPT - REAL API
-    ============================================ -->
     <script>
         (function() {
             'use strict';
@@ -965,7 +904,6 @@
                 searchInput.placeholder = type === 'email' ?
                     'Enter email address...' :
                     'Enter phone number with country code...';
-                // Clear previous results
                 resultArea.innerHTML = `
                     <div style="text-align: center; padding: 30px 0; color: var(--text-muted);">
                         <i class="fas fa-shield" style="font-size: 32px; display: block; margin-bottom: 12px; opacity: 0.3;"></i>
@@ -976,7 +914,7 @@
             });
 
             // ============================================
-            // MAIN SEARCH
+            // MAIN SEARCH WITH PROXY
             // ============================================
             async function performSearch() {
                 const query = searchInput.value.trim();
@@ -1044,21 +982,57 @@
 
                 try {
                     // ============================================
-                    // REAL API CALL - Have I Been Pwned v3
+                    // API CALL with multiple proxy fallbacks
                     // ============================================
                     let apiUrl;
                     if (currentType === 'email') {
                         apiUrl = `https://haveibeenpwned.com/api/v3/breachedaccount/${encodeURIComponent(query)}`;
                     } else {
-                        // Phone: use the same endpoint, treating phone as account name
                         apiUrl = `https://haveibeenpwned.com/api/v3/breachedaccount/${encodeURIComponent(query)}`;
                     }
 
-                    const response = await fetch(apiUrl, {
-                        headers: {
-                            'User-Agent': 'DataLeak-Sentinel-Checker'
+                    // Try multiple proxies in case one fails
+                    const proxies = [
+                        null, // Direct first
+                        'https://api.allorigins.win/raw?url=',
+                        'https://corsproxy.io/?',
+                        'https://cors-anywhere.herokuapp.com/'
+                    ];
+
+                    let response = null;
+                    let lastError = null;
+
+                    for (const proxy of proxies) {
+                        try {
+                            const url = proxy ? proxy + encodeURIComponent(apiUrl) : apiUrl;
+                            
+                            // Add timeout
+                            const controller = new AbortController();
+                            const timeoutId = setTimeout(() => controller.abort(), 15000);
+
+                            response = await fetch(url, {
+                                signal: controller.signal,
+                                headers: {
+                                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                                    'Accept': 'application/json'
+                                }
+                            });
+
+                            clearTimeout(timeoutId);
+
+                            // If response is ok or 404, break the loop
+                            if (response.status === 404 || response.ok) {
+                                break;
+                            }
+                        } catch (e) {
+                            lastError = e;
+                            continue;
                         }
-                    });
+                    }
+
+                    if (!response) {
+                        throw new Error('All proxy attempts failed. Please try again.');
+                    }
 
                     // ============================================
                     // RESPONSE HANDLING
@@ -1072,14 +1046,14 @@
                         resultArea.innerHTML = `
                             <div class="error-msg">
                                 <i class="fas fa-clock"></i>
-                                <span>Rate limit exceeded. Please wait a few seconds and try again.</span>
+                                <span>Rate limit exceeded. Please wait a moment and try again.</span>
                             </div>
                         `;
                         return;
                     }
 
                     if (!response.ok) {
-                        throw new Error(`API error: ${response.status} ${response.statusText}`);
+                        throw new Error(`API error: ${response.status}`);
                     }
 
                     const breaches = await response.json();
@@ -1092,7 +1066,16 @@
 
                 } catch (error) {
                     console.error('Search error:', error);
-                    if (error.message.includes('Failed to fetch')) {
+                    
+                    // Check for specific error types
+                    if (error.name === 'AbortError') {
+                        resultArea.innerHTML = `
+                            <div class="error-msg">
+                                <i class="fas fa-clock"></i>
+                                <span>Request timed out. Please try again.</span>
+                            </div>
+                        `;
+                    } else if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
                         resultArea.innerHTML = `
                             <div class="error-msg">
                                 <i class="fas fa-wifi"></i>
@@ -1103,7 +1086,7 @@
                         resultArea.innerHTML = `
                             <div class="error-msg">
                                 <i class="fas fa-exclamation-circle"></i>
-                                <span>${error.message || 'An unexpected error occurred.'}</span>
+                                <span>${error.message || 'An unexpected error occurred. Please try again.'}</span>
                             </div>
                         `;
                     }
@@ -1138,7 +1121,7 @@
                                 <span class="label">Clean Record</span>
                             </div>
                             <div class="stat">
-                                <span class="value" style="color: var(--text-secondary);">${new Date().toLocaleString()}</span>
+                                <span class="value" style="color: var(--text-secondary); font-size: 18px;">${new Date().toLocaleString()}</span>
                                 <span class="label">Last Checked</span>
                             </div>
                         </div>
@@ -1158,7 +1141,6 @@
                 const totalRecords = breaches.reduce((sum, b) => sum + (b.PwnCount || 0), 0);
                 const formattedRecords = totalRecords > 0 ? totalRecords.toLocaleString() : 'Unknown';
 
-                // Top 10 breaches as tags
                 const tagsHtml = breaches.slice(0, 12).map(b => `
                     <span class="breach-tag">
                         <i class="fas fa-skull"></i>
@@ -1170,9 +1152,13 @@
 
                 const moreText = count > 12 ? ` +${count - 12} more` : '';
 
-                // Build description from first breach
-                const firstDesc = breaches[0]?.Description || '';
-                const descPreview = firstDesc.length > 200 ? firstDesc.substring(0, 200) + '...' : firstDesc;
+                // Get most recent breach date
+                const sortedBreaches = [...breaches].sort((a, b) => {
+                    if (!a.BreachDate) return 1;
+                    if (!b.BreachDate) return -1;
+                    return new Date(b.BreachDate) - new Date(a.BreachDate);
+                });
+                const latestBreach = sortedBreaches[0];
 
                 resultArea.innerHTML = `
                     <div class="result-card">
@@ -1182,6 +1168,7 @@
                                 <h3 style="color: var(--danger);">⚠️ Data Breach Detected!</h3>
                                 <div class="sub">
                                     <span class="highlight">${query}</span> found in <strong style="color: var(--danger);">${count}</strong> breach${count > 1 ? 'es' : ''}
+                                    ${latestBreach?.BreachDate ? `· Latest: ${latestBreach.BreachDate}` : ''}
                                 </div>
                             </div>
                         </div>
@@ -1205,12 +1192,6 @@
                             ${tagsHtml}
                             ${moreText}
                         </div>
-
-                        ${descPreview ? `
-                            <div class="breach-description">
-                                <i class="fas fa-info-circle"></i> ${descPreview}
-                            </div>
-                        ` : ''}
 
                         <div style="margin-top: 16px; display: flex; gap: 20px; flex-wrap: wrap; font-size: 13px; color: var(--text-muted); border-top: 1px solid rgba(255,255,255,0.03); padding-top: 16px;">
                             <span><i class="far fa-clock"></i> Checked: ${new Date().toLocaleString()}</span>
@@ -1239,6 +1220,7 @@
             console.log('🔐 DataLeak Sentinel initialized.');
             console.log('📡 Connected to Have I Been Pwned API v3 (real data).');
             console.log('🌍 Scanning 15.7B+ records across 600+ breaches.');
+            console.log('🔄 Using multiple CORS proxies for reliability.');
 
         })();
     </script>
