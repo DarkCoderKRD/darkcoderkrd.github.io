@@ -3,67 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>ULTRA AI GUARD PRO v5.0</title>
+    <title>AI GUARD PRO - MOBILE OPTIMIZED</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/face-landmarks-detection"></script>
-
+    <!-- MediaPipe Fast Engine -->
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #030712; color: #f8fafc; touch-action: manipulation; }
-        .orbitron { font-family: 'Orbitron', sans-serif; }
         .unmirror { transform: scaleX(-1); }
-        .cyber-border { border: 1px solid rgba(56, 189, 248, 0.3); box-shadow: 0 0 15px rgba(56, 189, 248, 0.1); }
-        .cyber-alert { border: 1px solid #ff0055 !important; box-shadow: 0 0 20px rgba(255, 0, 85, 0.4) !important; }
+        .cyber-border { border: 1px solid rgba(56, 189, 248, 0.3); }
+        ::-webkit-scrollbar { width: 3px; }
+        ::-webkit-scrollbar-thumb { background: #334155; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between p-2 md:p-4 text-xs">
+<body class="min-h-screen flex flex-col justify-between p-2 text-xs">
 
-    <header class="bg-slate-950/90 cyber-border rounded-xl p-3 flex justify-between items-center mb-2">
+    <!-- Header Bar -->
+    <header class="bg-slate-950 cyber-border rounded-xl p-3 flex justify-between items-center mb-2">
         <div class="flex items-center space-x-2 space-x-reverse">
-            <div class="w-3 h-3 bg-cyan-400 rounded-full animate-ping" id="status-indicator"></div>
-            <h1 class="text-xs md:text-sm font-bold text-cyan-400 orbitron">ULTRA AI GUARD v5.0 (3D VECTOR)</h1>
+            <div class="w-3 h-3 bg-emerald-400 rounded-full animate-ping" id="status-indicator"></div>
+            <h1 class="text-xs font-bold text-cyan-400">AI GUARD MOBILE (FAST NO-LAG)</h1>
         </div>
         <div class="text-[11px] text-slate-400 font-mono" id="live-time">00:00:00</div>
     </header>
 
+    <!-- Main Mobile Grid -->
     <main class="grid grid-cols-1 md:grid-cols-3 gap-2 flex-grow">
         
-        <div class="md:col-span-2 bg-slate-950 cyber-border rounded-xl p-2 flex flex-col justify-between relative overflow-hidden min-h-[320px]" id="camera-box">
+        <!-- Camera Viewport -->
+        <div class="md:col-span-2 bg-slate-950 cyber-border rounded-xl p-2 flex flex-col justify-between relative overflow-hidden min-h-[300px]">
             <video id="webcam" class="hidden" playsinline muted></video>
 
-            <div class="relative w-full h-full min-h-[260px] bg-black rounded-lg overflow-hidden flex items-center justify-center">
+            <div class="relative w-full h-full min-h-[250px] bg-black rounded-lg overflow-hidden flex items-center justify-center">
                 <canvas id="output_canvas" class="w-full h-full object-cover unmirror"></canvas>
-                
-                <div id="guide-overlay" class="absolute top-4 bg-slate-900/90 border border-cyan-400 text-cyan-300 px-4 py-2 rounded-xl text-center shadow-2xl hidden font-bold text-xs orbitron">
-                    <span id="guide-text">پشکنینی Liveness: تکایە جارێک چاوەکانت بگرە... 👁️</span>
-                </div>
 
-                <div id="alert-badge" class="absolute top-4 bg-rose-600 text-white px-4 py-1.5 rounded-full font-bold text-xs uppercase shadow-xl animate-bounce hidden orbitron">
+                <div id="alert-badge" class="absolute top-3 bg-rose-600 text-white px-3 py-1 rounded-full font-bold text-xs uppercase shadow-xl animate-bounce hidden">
                     🚨 INTRUDER / کەسی نەناسراو!
                 </div>
 
                 <div id="standby-text" class="absolute text-slate-500 text-xs font-mono text-center">
-                    سیستەم ناچالاکە<br><span class="text-[10px] text-cyan-400">دوگمەی "دەستپێکردن" داگرە</span>
+                    کامێرا ناچالاکە<br><span class="text-[10px] text-cyan-400">دوگمەی "دەستپێکردن" داگرە</span>
                 </div>
             </div>
 
-            <div id="status-text" class="w-full py-1.5 text-center text-[11px] font-mono text-slate-400">
-                چاوەڕوانی کارپێکردنی مۆدێلی TensorFlow...
+            <div id="status-text" class="w-full py-1 text-center text-[11px] font-mono text-slate-400">
+                چاوەڕوانی کارپێکردن...
             </div>
         </div>
 
+        <!-- Controls -->
         <div class="bg-slate-950 cyber-border rounded-xl p-3 flex flex-col justify-between space-y-3">
             <div>
-                <h2 class="font-bold text-xs text-cyan-400 orbitron border-b border-slate-800 pb-2 mb-3">AI ADVANCED CONTROL</h2>
+                <h2 class="font-bold text-xs text-cyan-400 border-b border-slate-800 pb-2 mb-3">کۆنتڕۆڵ</h2>
                 
                 <div class="grid grid-cols-2 gap-2 mb-3">
-                    <button onclick="startSystem()" id="btn-start" class="bg-emerald-600/30 hover:bg-emerald-600/50 text-emerald-300 border border-emerald-500/40 font-bold py-2 px-3 rounded-lg text-xs transition">
+                    <button onclick="startSystem()" id="btn-start" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 px-3 rounded-lg text-xs transition">
                         ▶️ دەستپێکردن
                     </button>
                     <button onclick="stopSystem()" id="btn-stop" class="bg-rose-600/30 text-rose-400 font-bold py-2 px-3 rounded-lg border border-rose-500/30 text-xs transition disabled:opacity-30" disabled>
@@ -72,11 +69,11 @@
                 </div>
 
                 <div class="bg-slate-900 p-2.5 rounded-lg border border-slate-800 mb-3 space-y-2">
-                    <span class="text-[11px] text-slate-300 font-semibold block">تۆمارکردنی زیو (3D Face ID + Liveness):</span>
-                    <button onclick="start3DRegistration()" id="btn-register" class="w-full bg-cyan-600/30 hover:bg-cyan-600/50 text-cyan-300 border border-cyan-500/40 font-bold py-2 px-2 rounded text-xs transition orbitron">
-                        👤 SCAN & REGISTER MY 3D FACE
+                    <span class="text-[11px] text-slate-300 font-semibold block">تۆمارکردنی خاوەنەکە:</span>
+                    <button onclick="registerOwnerFace()" id="btn-register" class="w-full bg-cyan-600/30 hover:bg-cyan-600/50 text-cyan-300 border border-cyan-500/40 font-bold py-1.5 px-2 rounded text-xs transition">
+                        👤 تۆمارکردنی دەموچاوی من
                     </button>
-                    <div id="owner-status" class="text-[10px] text-slate-500 text-center font-mono">هیچ نەکراوە (پێویستی بە سڕینەوەیە)</div>
+                    <div id="owner-status" class="text-[10px] text-slate-500 text-center font-mono">دەموچاو تۆمارنەکراوە</div>
                 </div>
 
                 <div class="flex justify-between items-center text-xs pt-2 border-t border-slate-800">
@@ -85,43 +82,41 @@
                 </div>
             </div>
 
-            <div class="bg-slate-900 p-2.5 rounded-lg border border-slate-800 font-mono text-[11px] space-y-1">
-                <div class="flex justify-between"><span>3D Landmarks:</span><strong class="text-cyan-400">468 Points</strong></div>
-                <div class="flex justify-between"><span>وێنەگیراو:</span><strong class="text-emerald-400" id="snaps-cnt">0</strong></div>
+            <div class="bg-slate-900 p-2 rounded-lg border border-slate-800 font-mono text-[11px] space-y-1">
+                <div class="flex justify-between"><span>بینراو:</span><strong class="text-emerald-400" id="faces-cnt">0</strong></div>
+                <div class="flex justify-between"><span>وێنەگیراو:</span><strong class="text-sky-400" id="snaps-cnt">0</strong></div>
             </div>
         </div>
 
     </main>
 
-    <footer class="bg-slate-950 cyber-border rounded-xl p-2.5 mt-2">
-        <div class="flex justify-between items-center mb-1.5">
-            <h3 class="text-xs font-bold text-slate-300 orbitron">CAPTURED THREATS & LOGS</h3>
+    <!-- Captures -->
+    <footer class="bg-slate-950 cyber-border rounded-xl p-2 mt-2">
+        <div class="flex justify-between items-center mb-1">
+            <h3 class="text-xs font-bold text-slate-300">وێنە گیراوەکان</h3>
             <button onclick="clearCaptures()" class="text-[10px] text-rose-400 hover:underline">Clear</button>
         </div>
-        <div id="captures-list" class="flex space-x-2 space-x-reverse overflow-x-auto p-1 min-h-[70px] items-center">
+        <div id="captures-list" class="flex space-x-2 space-x-reverse overflow-x-auto p-1 min-h-[60px] items-center">
             <p id="empty-msg" class="text-slate-600 text-[11px] mx-auto">هیچ وێنەیەک پاشەکەوت نەکراوە</p>
         </div>
     </footer>
 
+    <!-- JavaScript Mobile Fast Engine -->
     <script>
         const videoElement = document.getElementById('webcam');
         const canvasElement = document.getElementById('output_canvas');
         const canvasCtx = canvasElement.getContext('2d');
         const statusText = document.getElementById('status-text');
         const alertBadge = document.getElementById('alert-badge');
-        const guideOverlay = document.getElementById('guide-overlay');
-        const guideText = document.getElementById('guide-text');
         const capturesList = document.getElementById('captures-list');
 
-        let detector = null;
+        let camera = null;
+        let faceMesh = null;
         let isSystemRunning = false;
         let isSoundEnabled = true;
 
-        // Vector Database for Registered Owner
-        let ownerVector3D = null;
-        let isRegistering3D = false;
-        let blinkDetected = false;
-
+        let ownerRatio = null;
+        let currentRatio = null;
         let totalSnaps = 0;
         let lastSnapTime = 0;
 
@@ -138,8 +133,8 @@
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.type = 'sine';
-            osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
-            osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.12); // A5
+            osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(659.25, audioCtx.currentTime + 0.12);
 
             gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.2);
@@ -150,150 +145,104 @@
             osc.stop(audioCtx.currentTime + 0.2);
         }
 
-        // Initialize TensorFlow High-Accuracy Detector
-        async function initEngine() {
-            statusText.innerText = "بارکردنی ئەلگۆریتمەکانی TensorFlow 3D Engine...";
-            await tf.setBackend('webgl');
-            
-            const model = faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh;
-            const detectorConfig = { runtime: 'tfjs', maxFaces: 1, refineLandmarks: true };
-            detector = await faceLandmarksDetection.createDetector(model, detectorConfig);
-
-            const camera = new Camera(videoElement, {
-                onFrame: async () => {
-                    if (isSystemRunning) processFrame();
-                },
-                facingMode: 'user',
-                width: 640,
-                height: 480
+        function initEngine() {
+            faceMesh = new FaceMesh({
+                locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`
             });
-            camera.start();
-            statusText.innerText = "سیستەم ئامادەیە - تەنها دەستپێکردن داگرە.";
+            
+            // Fast Settings for Mobile GPUs
+            faceMesh.setOptions({
+                maxNumFaces: 1,
+                refineLandmarks: false, // Turned off for zero lag
+                minDetectionConfidence: 0.3,
+                minTrackingConfidence: 0.3
+            });
+            faceMesh.onResults(onResults);
         }
 
-        // Calculate Eye Aspect Ratio (EAR) for Blink Liveness Check
-        function checkEyeBlink(keypoints) {
-            const p1 = keypoints[159], p2 = keypoints[145]; // Left eye top/bottom
-            const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
-            return dist < 4; // If distance is very small, eye is closed (Blink)
+        function calculateRatio(landmarks) {
+            const leftEye = landmarks[33];
+            const rightEye = landmarks[263];
+            const nose = landmarks[1];
+            const chin = landmarks[152];
+
+            const eyeDist = Math.hypot(rightEye.x - leftEye.x, rightEye.y - leftEye.y);
+            const noseChinDist = Math.hypot(chin.x - nose.x, chin.y - nose.y);
+
+            return parseFloat((eyeDist / noseChinDist).toFixed(3));
         }
 
-        // Extract Normalized 3D Feature Vector
-        function extract3DVector(keypoints) {
-            const nose = keypoints[1];
-            let vector = [];
-            for (let i = 0; i < keypoints.length; i += 10) { // Normalize relative to nose
-                vector.push((keypoints[i].x - nose.x).toFixed(3));
-                vector.push((keypoints[i].y - nose.y).toFixed(3));
-            }
-            return vector;
-        }
-
-        // Vector Cosine Similarity Distance Algorithm
-        function compareVectors(vecA, vecB) {
-            let dot = 0, normA = 0, normB = 0;
-            for (let i = 0; i < vecA.length; i++) {
-                dot += vecA[i] * vecB[i];
-                normA += vecA[i] * vecA[i];
-                normB += vecB[i] * vecB[i];
-            }
-            return dot / (Math.sqrt(normA) * Math.sqrt(normB));
-        }
-
-        // Start 3D Liveness Scan
-        function start3DRegistration() {
-            if (!isSystemRunning) {
-                alert("پێشتر دوگمەی دەستپێکردن داگرە!");
+        function registerOwnerFace() {
+            if (!isSystemRunning || !currentRatio) {
+                alert("تکایە بە ڕوونی بچۆ بەرامبەر کامێراکە پاشان دوگمەکە داگرە!");
                 return;
             }
-            isRegistering3D = true;
-            blinkDetected = false;
-            guideOverlay.classList.remove('hidden');
-            guideText.innerText = "تکایە جارێک چاوەکانت بگریت (پشکنینی زیندوبوون) 👁️";
+            ownerRatio = currentRatio;
+            document.getElementById('owner-status').innerText = "✅ دەموچاوت پاشەکەوتکرا!";
+            document.getElementById('owner-status').className = "text-[10px] text-emerald-400 font-bold text-center font-mono";
+            playSoftChime();
         }
 
-        // Process Frames with TensorFlow
-        async function processFrame() {
-            const faces = await detector.estimateFaces(videoElement, { flipHorizontal: false });
-
+        function onResults(results) {
             canvasElement.width = videoElement.videoWidth;
             canvasElement.height = videoElement.videoHeight;
 
             canvasCtx.save();
             canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-            canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+            canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
 
-            if (faces.length > 0) {
-                const keypoints = faces[0].keypoints;
-                const box = faces[0].box;
+            const landmarks = results.multiFaceLandmarks ? results.multiFaceLandmarks[0] : null;
+            document.getElementById('faces-cnt').innerText = landmarks ? 1 : 0;
 
-                // Check Blink Detection for Liveness
-                if (isRegistering3D) {
-                    if (checkEyeBlink(keypoints)) {
-                        blinkDetected = true;
-                        guideText.innerText = "چاوگرتنەکە تۆمارکرا! بە ڕاستی تەماشاکە...";
-                    }
-                    if (blinkDetected && !checkEyeBlink(keypoints)) { // Eye reopened
-                        ownerVector3D = extract3DVector(keypoints);
-                        isRegistering3D = false;
-                        guideOverlay.classList.add('hidden');
-                        document.getElementById('owner-status').innerText = "✅ نەخشەی 3D + Liveness بەسەرکەوتوویی پاشەکەوتکرا!";
-                        document.getElementById('owner-status').className = "text-[10px] text-emerald-400 font-bold text-center font-mono";
-                        playSoftChime();
-                    }
+            if (landmarks) {
+                currentRatio = calculateRatio(landmarks);
+
+                let minX = 1, minY = 1, maxX = 0, maxY = 0;
+                for (let i = 0; i < landmarks.length; i += 5) { // Skip points to boost speed
+                    const pt = landmarks[i];
+                    if (pt.x < minX) minX = pt.x;
+                    if (pt.x > maxX) maxX = pt.x;
+                    if (pt.y < minY) minY = pt.y;
+                    if (pt.y > maxY) maxY = pt.y;
                 }
 
-                // Recognize Recognized Face
+                const x = minX * canvasElement.width;
+                const y = minY * canvasElement.height;
+                const w = (maxX - minX) * canvasElement.width;
+                const h = (maxY - minY) * canvasElement.height;
+
                 let isOwner = false;
-                if (ownerVector3D !== null) {
-                    const currentVec = extract3DVector(keypoints);
-                    const similarity = compareVectors(ownerVector3D, currentVec);
-                    if (similarity > 0.92) { // 92% Vector match accuracy
-                        isOwner = true;
-                    }
+                if (ownerRatio !== null) {
+                    const diff = Math.abs(currentRatio - ownerRatio);
+                    if (diff <= 0.09) isOwner = true;
                 }
 
-                // Draw 3D Box & Points Effect
-                const x = box.xMin, y = box.yMin, w = box.width, h = box.height;
-                canvasCtx.strokeStyle = isOwner ? '#22c55e' : (isRegistering3D ? '#38bdf8' : '#ff0055');
+                canvasCtx.strokeStyle = isOwner ? '#22c55e' : '#ef4444';
                 canvasCtx.lineWidth = 3;
                 canvasCtx.strokeRect(x, y, w, h);
 
-                // Draw Feature Mesh
-                canvasCtx.fillStyle = isOwner ? '#22c55e' : '#ff0055';
-                for (let i = 0; i < keypoints.length; i += 20) {
-                    canvasCtx.fillRect(keypoints[i].x, keypoints[i].y, 2, 2);
-                }
-
-                // Labeling
                 canvasCtx.save();
                 canvasCtx.scale(-1, 1);
-                canvasCtx.font = 'bold 13px Orbitron';
-                canvasCtx.fillStyle = isOwner ? '#22c55e' : (isRegistering3D ? '#38bdf8' : '#ff0055');
-                
-                let text = "UNKNOWN PERSON";
-                if (isRegistering3D) text = "LIVENESS SCAN...";
-                else if (isOwner) text = "AUTHORIZED USER (3D MATCH)";
-
-                canvasCtx.fillText(text, -(x + w), y > 20 ? y - 10 : 20);
+                canvasCtx.fillStyle = isOwner ? '#22c55e' : '#ef4444';
+                canvasCtx.font = 'bold 13px Inter';
+                canvasCtx.fillText(isOwner ? 'AUTHORIZED (تۆ)' : 'UNKNOWN PERSON', -(x + w), y > 20 ? y - 10 : 20);
                 canvasCtx.restore();
 
-                const camBox = document.getElementById('camera-box');
-
-                if (!isOwner && ownerVector3D !== null && !isRegistering3D) {
+                if (!isOwner && ownerRatio !== null) {
                     alertBadge.classList.remove('hidden');
-                    camBox.classList.add('cyber-alert');
                     statusText.innerText = "🚨 ئاگاداری: کەسێکی نەناسراو دۆزرایەوە!";
-                    statusText.className = "w-full py-1.5 text-center text-[11px] font-mono text-rose-500 font-bold";
+                    statusText.className = "w-full py-1 text-center text-[11px] font-mono text-rose-500 font-bold";
                     playSoftChime();
                 } else if (isOwner) {
                     alertBadge.classList.add('hidden');
-                    camBox.classList.remove('cyber-alert');
-                    statusText.innerText = "خاوەنەکەی ناسرایەوە (دەستگەیشتنی 3D سەلامەتە)";
-                    statusText.className = "w-full py-1.5 text-center text-[11px] font-mono text-emerald-400";
+                    statusText.innerText = "خاوەنەکەی ناسرایەوە (سەلامەتە)";
+                    statusText.className = "w-full py-1 text-center text-[11px] font-mono text-emerald-400";
+                } else {
+                    alertBadge.classList.add('hidden');
+                    statusText.innerText = "کەسێک دۆزرایەوە. دەتوانیت تۆماری بکەیت.";
+                    statusText.className = "w-full py-1 text-center text-[11px] font-mono text-cyan-400";
                 }
 
-                // Snapshots
                 const now = Date.now();
                 if (now - lastSnapTime > 3000) {
                     captureCrop(x, y, w, h);
@@ -301,9 +250,8 @@
                 }
             } else {
                 alertBadge.classList.add('hidden');
-                document.getElementById('camera-box').classList.remove('cyber-alert');
                 statusText.innerText = "هیچ کەسێک لە مەودای کامێراکەدا نییە";
-                statusText.className = "w-full py-1.5 text-center text-[11px] font-mono text-slate-400";
+                statusText.className = "w-full py-1 text-center text-[11px] font-mono text-slate-400";
             }
             canvasCtx.restore();
         }
@@ -314,15 +262,15 @@
 
             const cropCanvas = document.createElement('canvas');
             const cropCtx = cropCanvas.getContext('2d');
-            cropCanvas.width = 100;
-            cropCanvas.height = 100;
+            cropCanvas.width = 90;
+            cropCanvas.height = 90;
 
-            cropCtx.drawImage(canvasElement, x, y, w, h, 0, 0, 100, 100);
+            cropCtx.drawImage(canvasElement, x, y, w, h, 0, 0, 90, 90);
             const imgUrl = cropCanvas.toDataURL('image/png');
 
             const item = document.createElement('img');
             item.src = imgUrl;
-            item.className = "w-14 h-14 object-cover rounded-lg border border-slate-700 flex-shrink-0";
+            item.className = "w-12 h-12 object-cover rounded-lg border border-slate-700 flex-shrink-0";
 
             capturesList.prepend(item);
             totalSnaps++;
@@ -330,24 +278,46 @@
         }
 
         async function startSystem() {
-            if (!detector) await initEngine();
+            if (!faceMesh) initEngine();
             isSystemRunning = true;
 
-            document.getElementById('standby-text').classList.add('hidden');
-            document.getElementById('btn-start').disabled = true;
-            document.getElementById('btn-start').classList.add('opacity-30');
-            document.getElementById('btn-stop').disabled = false;
-            document.getElementById('btn-stop').classList.remove('opacity-30');
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } },
+                    audio: false
+                });
+                videoElement.srcObject = stream;
+                await videoElement.play();
 
-            document.getElementById('status-indicator').className = "w-3 h-3 bg-cyan-400 rounded-full animate-ping";
+                camera = new Camera(videoElement, {
+                    onFrame: async () => {
+                        if (isSystemRunning) await faceMesh.send({ image: videoElement });
+                    }
+                });
+                camera.start();
+
+                document.getElementById('standby-text').classList.add('hidden');
+                document.getElementById('btn-start').disabled = true;
+                document.getElementById('btn-start').classList.add('opacity-30');
+                document.getElementById('btn-stop').disabled = false;
+                document.getElementById('btn-stop').classList.remove('opacity-30');
+
+                document.getElementById('status-indicator').className = "w-3 h-3 bg-emerald-500 rounded-full animate-ping";
+            } catch (err) {
+                alert("کامێرا نەکرایەوە: " + err.message + "\nتکایە ڕێگەپێدان بدە بە کامێراکە.");
+            }
         }
 
         function stopSystem() {
             isSystemRunning = false;
+            if (camera) camera.stop();
+            if (videoElement.srcObject) {
+                videoElement.srcObject.getTracks().forEach(track => track.stop());
+            }
+
             canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
             document.getElementById('standby-text').classList.remove('hidden');
             alertBadge.classList.add('hidden');
-            guideOverlay.classList.add('hidden');
 
             document.getElementById('btn-start').disabled = false;
             document.getElementById('btn-start').classList.remove('opacity-30');
