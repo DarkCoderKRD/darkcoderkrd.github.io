@@ -1,343 +1,769 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>AI GUARD PRO - MOBILE OPTIMIZED</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex Motors 3D - Outdoor Daytona Showroom</title>
 
-    <!-- MediaPipe Fast Engine -->
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Import Maps for Three.js ES6 Modules -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #030712; color: #f8fafc; touch-action: manipulation; }
-        .unmirror { transform: scaleX(-1); }
-        .cyber-border { border: 1px solid rgba(56, 189, 248, 0.3); }
-        ::-webkit-scrollbar { width: 3px; }
-        ::-webkit-scrollbar-thumb { background: #334155; }
+        :root {
+            --primary-blue: #0284c7;
+            --accent-gold: #f59e0b;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --text-dark: #0f172a;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-family);
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #e2e8f0;
+            color: var(--text-dark);
+        }
+
+        #canvas-container {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* UI LAYOUT OVERLAY */
+        .ui-layer {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+        .interactive { pointer-events: auto; }
+
+        /* TOP NAVIGATION & ONLINE SERVER HUD */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            padding: 10px 20px;
+            border-radius: 14px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .brand-title {
+            font-weight: 900;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            color: #0f172a;
+        }
+
+        .server-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #16a34a;
+            background: rgba(22, 163, 74, 0.1);
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #16a34a;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #16a34a;
+        }
+
+        .hud-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            padding: 10px 20px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-ui {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-dark);
+            padding: 10px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.88rem;
+            backdrop-filter: blur(12px);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-ui:hover {
+            background: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0284c7, #2563eb);
+            color: #ffffff;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 8px 25px rgba(2, 132, 199, 0.4);
+        }
+
+        /* ONLINE PLAYERS SIDEBAR HUD */
+        .online-players-panel {
+            position: absolute;
+            top: 80px;
+            right: 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 14px;
+            width: 220px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        .panel-header {
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .player-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .player-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #0284c7;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+        }
+
+        /* BOTTOM VEHICLE HUD */
+        .bottom-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .car-details-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            padding: 20px 24px;
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            min-width: 300px;
+        }
+
+        .color-palette {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .color-chip {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.2s;
+        }
+
+        .color-chip:hover { transform: scale(1.15); }
+        .color-chip.active { border-color: #0f172a; }
+
+        .speedometer {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            padding: 16px 28px;
+            border-radius: 18px;
+            text-align: right;
+            display: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .speed-number {
+            font-size: 3.2rem;
+            font-weight: 900;
+            color: var(--primary-blue);
+            line-height: 1;
+        }
+
+        /* MODAL DIALOGS */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-window {
+            background: #ffffff;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 800px;
+            padding: 28px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+        }
+
+        .modal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 16px;
+        }
+
+        .vehicle-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between p-2 text-xs">
+<body>
 
-    <!-- Header Bar -->
-    <header class="bg-slate-950 cyber-border rounded-xl p-3 flex justify-between items-center mb-2">
-        <div class="flex items-center space-x-2 space-x-reverse">
-            <div class="w-3 h-3 bg-emerald-400 rounded-full animate-ping" id="status-indicator"></div>
-            <h1 class="text-xs font-bold text-cyan-400">AI GUARD MOBILE (FAST NO-LAG)</h1>
-        </div>
-        <div class="text-[11px] text-slate-400 font-mono" id="live-time">00:00:00</div>
-    </header>
+    <div id="canvas-container"></div>
 
-    <!-- Main Mobile Grid -->
-    <main class="grid grid-cols-1 md:grid-cols-3 gap-2 flex-grow">
-        
-        <!-- Camera Viewport -->
-        <div class="md:col-span-2 bg-slate-950 cyber-border rounded-xl p-2 flex flex-col justify-between relative overflow-hidden min-h-[300px]">
-            <video id="webcam" class="hidden" playsinline muted></video>
-
-            <div class="relative w-full h-full min-h-[250px] bg-black rounded-lg overflow-hidden flex items-center justify-center">
-                <canvas id="output_canvas" class="w-full h-full object-cover unmirror"></canvas>
-
-                <div id="alert-badge" class="absolute top-3 bg-rose-600 text-white px-3 py-1 rounded-full font-bold text-xs uppercase shadow-xl animate-bounce hidden">
-                    🚨 INTRUDER / کەسی نەناسراو!
-                </div>
-
-                <div id="standby-text" class="absolute text-slate-500 text-xs font-mono text-center">
-                    کامێرا ناچالاکە<br><span class="text-[10px] text-cyan-400">دوگمەی "دەستپێکردن" داگرە</span>
+    <div class="ui-layer">
+        <!-- TOP HUD -->
+        <div class="top-bar">
+            <div class="brand-logo">
+                <span style="font-size: 1.2rem;">🏎️</span>
+                <div class="brand-title">APEX MOTORS</div>
+                <div class="server-status">
+                    <div class="status-dot"></div>
+                    <span>US-EAST #04</span>
                 </div>
             </div>
 
-            <div id="status-text" class="w-full py-1 text-center text-[11px] font-mono text-slate-400">
-                چاوەڕوانی کارپێکردن...
+            <div class="hud-card">
+                💵 <span style="color: #16a34a;" id="cash-display">$650,000</span>
+            </div>
+
+            <div class="nav-actions interactive">
+                <button class="btn-ui" onclick="toggleTimeOfDay()">☀️ Day / 🌙 Night</button>
+                <button class="btn-ui" onclick="openModal('store-modal')">🏪 Store</button>
+                <button class="btn-ui" onclick="openModal('garage-modal')">🚘 Garage</button>
             </div>
         </div>
 
-        <!-- Controls -->
-        <div class="bg-slate-950 cyber-border rounded-xl p-3 flex flex-col justify-between space-y-3">
-            <div>
-                <h2 class="font-bold text-xs text-cyan-400 border-b border-slate-800 pb-2 mb-3">کۆنتڕۆڵ</h2>
-                
-                <div class="grid grid-cols-2 gap-2 mb-3">
-                    <button onclick="startSystem()" id="btn-start" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 px-3 rounded-lg text-xs transition">
-                        ▶️ دەستپێکردن
-                    </button>
-                    <button onclick="stopSystem()" id="btn-stop" class="bg-rose-600/30 text-rose-400 font-bold py-2 px-3 rounded-lg border border-rose-500/30 text-xs transition disabled:opacity-30" disabled>
-                        ⏸️ وەستاندن
-                    </button>
-                </div>
-
-                <div class="bg-slate-900 p-2.5 rounded-lg border border-slate-800 mb-3 space-y-2">
-                    <span class="text-[11px] text-slate-300 font-semibold block">تۆمارکردنی خاوەنەکە:</span>
-                    <button onclick="registerOwnerFace()" id="btn-register" class="w-full bg-cyan-600/30 hover:bg-cyan-600/50 text-cyan-300 border border-cyan-500/40 font-bold py-1.5 px-2 rounded text-xs transition">
-                        👤 تۆمارکردنی دەموچاوی من
-                    </button>
-                    <div id="owner-status" class="text-[10px] text-slate-500 text-center font-mono">دەموچاو تۆمارنەکراوە</div>
-                </div>
-
-                <div class="flex justify-between items-center text-xs pt-2 border-t border-slate-800">
-                    <span class="text-slate-300">دەنگی ئاگاداری:</span>
-                    <button onclick="toggleSound()" id="btn-sound" class="bg-slate-900 border border-slate-800 px-2 py-1 rounded text-cyan-400">🔊 چالاکە</button>
-                </div>
+        <!-- ONLINE LOBBY PLAYERS -->
+        <div class="online-players-panel interactive">
+            <div class="panel-header">
+                <span>Lobby Players</span>
+                <span style="color: #16a34a;">4 Online</span>
             </div>
-
-            <div class="bg-slate-900 p-2 rounded-lg border border-slate-800 font-mono text-[11px] space-y-1">
-                <div class="flex justify-between"><span>بینراو:</span><strong class="text-emerald-400" id="faces-cnt">0</strong></div>
-                <div class="flex justify-between"><span>وێنەگیراو:</span><strong class="text-sky-400" id="snaps-cnt">0</strong></div>
+            <div class="player-row">
+                <div class="player-avatar">YOU</div>
+                <div>Player_Host (You)</div>
+            </div>
+            <div class="player-row">
+                <div class="player-avatar" style="background:#8b5cf6">A</div>
+                <div>Alex_GT3</div>
+            </div>
+            <div class="player-row">
+                <div class="player-avatar" style="background:#ec4899">S</div>
+                <div>SpeedDemon</div>
+            </div>
+            <div class="player-row">
+                <div class="player-avatar" style="background:#f59e0b">M</div>
+                <div>MaxDrive99</div>
             </div>
         </div>
 
-    </main>
+        <!-- BOTTOM HUD -->
+        <div class="bottom-bar">
+            <div class="car-details-card interactive" id="car-details-card">
+                <h2 id="car-name-display" style="font-size: 1.4rem; font-weight: 900;">Porsche 911 GT3 RS</h2>
+                <div style="font-size: 0.85rem; color: #64748b; margin-top: 4px;">
+                    Top Speed: <strong style="color: #0f172a;" id="car-speed-display">325 KM/H</strong> • PBR Clearcoat Lacquer
+                </div>
 
-    <!-- Captures -->
-    <footer class="bg-slate-950 cyber-border rounded-xl p-2 mt-2">
-        <div class="flex justify-between items-center mb-1">
-            <h3 class="text-xs font-bold text-slate-300">وێنە گیراوەکان</h3>
-            <button onclick="clearCaptures()" class="text-[10px] text-rose-400 hover:underline">Clear</button>
+                <div class="color-palette">
+                    <div class="color-chip active" style="background: #f97316;" onclick="paintVehicle(0xf97316, this)"></div>
+                    <div class="color-chip" style="background: #0f172a;" onclick="paintVehicle(0x0f172a, this)"></div>
+                    <div class="color-chip" style="background: #0284c7;" onclick="paintVehicle(0x0284c7, this)"></div>
+                    <div class="color-chip" style="background: #dc2626;" onclick="paintVehicle(0xdc2626, this)"></div>
+                    <div class="color-chip" style="background: #ffffff;" onclick="paintVehicle(0xffffff, this)"></div>
+                </div>
+            </div>
+
+            <div class="nav-actions interactive">
+                <button class="btn-ui btn-primary" id="drive-btn" style="padding: 14px 28px; font-size: 1rem;" onclick="toggleDriveMode()">🏎️ DRIVE IN OPEN WORLD</button>
+            </div>
+
+            <div class="speedometer" id="speedometer">
+                <div class="speed-number" id="speed-num">0</div>
+                <div style="font-size: 0.75rem; color: #64748b; font-weight: 800;">KM / H</div>
+            </div>
         </div>
-        <div id="captures-list" class="flex space-x-2 space-x-reverse overflow-x-auto p-1 min-h-[60px] items-center">
-            <p id="empty-msg" class="text-slate-600 text-[11px] mx-auto">هیچ وێنەیەک پاشەکەوت نەکراوە</p>
+    </div>
+
+    <!-- MODAL WINDOWS -->
+    <div class="modal-backdrop interactive" id="store-modal">
+        <div class="modal-window">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2>DAYTONA DEALERSHIP</h2>
+                <button class="btn-ui" onclick="closeModals()">✕</button>
+            </div>
+            <div class="modal-grid" id="store-grid"></div>
         </div>
-    </footer>
+    </div>
 
-    <!-- JavaScript Mobile Fast Engine -->
-    <script>
-        const videoElement = document.getElementById('webcam');
-        const canvasElement = document.getElementById('output_canvas');
-        const canvasCtx = canvasElement.getContext('2d');
-        const statusText = document.getElementById('status-text');
-        const alertBadge = document.getElementById('alert-badge');
-        const capturesList = document.getElementById('captures-list');
+    <div class="modal-backdrop interactive" id="garage-modal">
+        <div class="modal-window">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2>MY GARAGE COLLECTION</h2>
+                <button class="btn-ui" onclick="closeModals()">✕</button>
+            </div>
+            <div class="modal-grid" id="garage-grid"></div>
+        </div>
+    </div>
 
-        let camera = null;
-        let faceMesh = null;
-        let isSystemRunning = false;
-        let isSoundEnabled = true;
+    <script type="module">
+        import * as THREE from 'three';
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 
-        let ownerRatio = null;
-        let currentRatio = null;
-        let totalSnaps = 0;
-        let lastSnapTime = 0;
+        /* ================= GAME STATE ================= */
+        const gameState = {
+            cash: 650000,
+            equippedId: 'gt3_rs',
+            ownedCars: ['gt3_rs'],
+            isDaylight: true,
+            driveMode: false,
+            cars: [
+                { id: 'gt3_rs', name: 'Porsche 911 GT3 RS', price: 0, speed: 325, accel: 0.08, color: 0xf97316 },
+                { id: 'ferrari_f', name: 'Ferrari F8 Tributo', price: 280000, speed: 340, accel: 0.09, color: 0xdc2626 },
+                { id: 'lambo_h', name: 'Huracán EVOR', price: 310000, speed: 330, accel: 0.085, color: 0x0284c7 }
+            ]
+        };
 
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        /* ================= SCENE & RENDERER SETUP ================= */
+        const container = document.getElementById('canvas-container');
+        const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.1;
+        container.appendChild(renderer.domElement);
 
-        setInterval(() => {
-            document.getElementById('live-time').innerText = new Date().toLocaleTimeString();
-        }, 1000);
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x87ceeb); // Daylight Sky Blue
+        scene.fog = new THREE.FogExp2(0x87ceeb, 0.008);
 
-        function playSoftChime() {
-            if (!isSoundEnabled) return;
-            if (audioCtx.state === 'suspended') audioCtx.resume();
+        const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 2.5, 7.5);
 
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(659.25, audioCtx.currentTime + 0.12);
+        const composer = new EffectComposer(renderer);
+        composer.addPass(new RenderPass(scene, camera));
 
-            gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.2);
+        /* ================= DAYLIGHT LIGHTING ================= */
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
+        scene.add(ambientLight);
 
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.2);
+        const sunLight = new THREE.DirectionalLight(0xfffaed, 2.5);
+        sunLight.position.set(50, 80, 40);
+        sunLight.castShadow = true;
+        sunLight.shadow.mapSize.width = 2048;
+        sunLight.shadow.mapSize.height = 2048;
+        sunLight.shadow.bias = -0.0001;
+        scene.add(sunLight);
+
+        /* ================= DAYTONA OUTDOOR SHOWROOM ENVIRONMENT ================= */
+        const environmentGroup = new THREE.Group();
+
+        // Architectural White Concrete Plaza
+        const plazaGeo = new THREE.PlaneGeometry(200, 200);
+        const plazaMat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, roughness: 0.3, metalness: 0.1 });
+        const plaza = new THREE.Mesh(plazaGeo, plazaMat);
+        plaza.rotation.x = -Math.PI / 2;
+        plaza.receiveShadow = true;
+        environmentGroup.add(plaza);
+
+        // Circular Wooden Platform
+        const platformGeo = new THREE.CylinderGeometry(5, 5.2, 0.2, 64);
+        const platformMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.4, metalness: 0.6 });
+        const platform = new THREE.Mesh(platformGeo, platformMat);
+        platform.position.y = -0.1;
+        platform.receiveShadow = true;
+        environmentGroup.add(platform);
+
+        // Glass Pavilion Columns
+        for (let angle = 0; angle < Math.PI * 2; angle += Math.PI / 3) {
+            const pillarGeo = new THREE.BoxGeometry(0.4, 12, 0.4);
+            const pillarMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.2, metalness: 0.8 });
+            const pillar = new THREE.Mesh(pillarGeo, pillarMat);
+            pillar.position.set(Math.sin(angle) * 14, 6, Math.cos(angle) * 14);
+            pillar.castShadow = true;
+            environmentGroup.add(pillar);
         }
 
-        function initEngine() {
-            faceMesh = new FaceMesh({
-                locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`
+        scene.add(environmentGroup);
+
+        /* ================= HIGH-DETAIL VEHICLE MESH ================= */
+        let currentVehicleMesh = null;
+        let vehiclePaintMat = null;
+
+        function buildVehicle(carData) {
+            const group = new THREE.Group();
+
+            vehiclePaintMat = new THREE.MeshPhysicalMaterial({
+                color: carData.color,
+                metalness: 0.85,
+                roughness: 0.12,
+                clearcoat: 1.0,
+                clearcoatRoughness: 0.03,
+                reflectivity: 1.0
             });
-            
-            // Fast Settings for Mobile GPUs
-            faceMesh.setOptions({
-                maxNumFaces: 1,
-                refineLandmarks: false, // Turned off for zero lag
-                minDetectionConfidence: 0.3,
-                minTrackingConfidence: 0.3
+
+            const trimMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.2, metalness: 0.8 });
+            const glassMat = new THREE.MeshPhysicalMaterial({ color: 0x0f172a, transmission: 0.9, opacity: 1, transparent: true, roughness: 0.0 });
+
+            // Curved Body Geometry
+            const bodyShape = new THREE.Shape();
+            bodyShape.moveTo(-2.2, 0.2);
+            bodyShape.lineTo(-2.0, 0.55);
+            bodyShape.lineTo(-0.9, 0.7);
+            bodyShape.lineTo(-0.2, 1.2);
+            bodyShape.lineTo(0.9, 1.2);
+            bodyShape.lineTo(1.7, 0.7);
+            bodyShape.lineTo(2.2, 0.55);
+            bodyShape.lineTo(2.3, 0.2);
+            bodyShape.lineTo(-2.2, 0.2);
+
+            const bodyGeo = new THREE.ExtrudeGeometry(bodyShape, { depth: 1.85, bevelEnabled: true, bevelSegments: 6, steps: 2, bevelSize: 0.12, bevelThickness: 0.12 });
+            bodyGeo.center();
+            const bodyMesh = new THREE.Mesh(bodyGeo, vehiclePaintMat);
+            bodyMesh.position.y = 0.65;
+            bodyMesh.castShadow = true;
+            group.add(bodyMesh);
+
+            // Glass Canopy
+            const canopyGeo = new THREE.BoxGeometry(1.6, 0.6, 1.55);
+            const canopyMesh = new THREE.Mesh(canopyGeo, glassMat);
+            canopyMesh.position.set(0.1, 1.18, 0);
+            group.add(canopyMesh);
+
+            // Side Skirts & Spoiler
+            const spoilerGeo = new THREE.BoxGeometry(0.3, 0.08, 1.8);
+            const spoilerMesh = new THREE.Mesh(spoilerGeo, trimMat);
+            spoilerMesh.position.set(-2.0, 1.3, 0);
+            group.add(spoilerMesh);
+
+            // Wheels
+            const wheelPositions = [
+                [1.3, 0.4, 0.95], [1.3, 0.4, -0.95],
+                [-1.3, 0.4, 0.95], [-1.3, 0.4, -0.95]
+            ];
+
+            const tireGeo = new THREE.CylinderGeometry(0.42, 0.42, 0.35, 32);
+            const tireMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.8 });
+            const rimGeo = new THREE.CylinderGeometry(0.28, 0.28, 0.36, 12);
+            const rimMat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, metalness: 0.9, roughness: 0.1 });
+
+            wheelPositions.forEach(pos => {
+                const wGroup = new THREE.Group();
+                const tire = new THREE.Mesh(tireGeo, tireMat);
+                tire.rotation.x = Math.PI / 2;
+                tire.castShadow = true;
+                wGroup.add(tire);
+
+                const rim = new THREE.Mesh(rimGeo, rimMat);
+                rim.rotation.x = Math.PI / 2;
+                wGroup.add(rim);
+
+                wGroup.position.set(...pos);
+                group.add(wGroup);
             });
-            faceMesh.onResults(onResults);
+
+            return group;
         }
 
-        function calculateRatio(landmarks) {
-            const leftEye = landmarks[33];
-            const rightEye = landmarks[263];
-            const nose = landmarks[1];
-            const chin = landmarks[152];
+        function loadVehicle(carId) {
+            if (currentVehicleMesh) scene.remove(currentVehicleMesh);
+            const carData = gameState.cars.find(c => c.id === carId);
+            currentVehicleMesh = buildVehicle(carData);
+            scene.add(currentVehicleMesh);
 
-            const eyeDist = Math.hypot(rightEye.x - leftEye.x, rightEye.y - leftEye.y);
-            const noseChinDist = Math.hypot(chin.x - nose.x, chin.y - nose.y);
-
-            return parseFloat((eyeDist / noseChinDist).toFixed(3));
+            document.getElementById('car-name-display').textContent = carData.name;
+            document.getElementById('car-speed-display').textContent = `${carData.speed} KM/H`;
         }
 
-        function registerOwnerFace() {
-            if (!isSystemRunning || !currentRatio) {
-                alert("تکایە بە ڕوونی بچۆ بەرامبەر کامێراکە پاشان دوگمەکە داگرە!");
-                return;
+        loadVehicle(gameState.equippedId);
+
+        /* ================= DRIVING CONTROLS & CAMERA ================= */
+        const physics = { x: 0, z: 0, speed: 0, angle: 0 };
+        const keys = { w: false, a: false, s: false, d: false };
+
+        window.addEventListener('keydown', e => {
+            if (['w','ArrowUp'].includes(e.key.toLowerCase())) keys.w = true;
+            if (['s','ArrowDown'].includes(e.key.toLowerCase())) keys.s = true;
+            if (['a','ArrowLeft'].includes(e.key.toLowerCase())) keys.a = true;
+            if (['d','ArrowRight'].includes(e.key.toLowerCase())) keys.d = true;
+        });
+
+        window.addEventListener('keyup', e => {
+            if (['w','ArrowUp'].includes(e.key.toLowerCase())) keys.w = false;
+            if (['s','ArrowDown'].includes(e.key.toLowerCase())) keys.s = false;
+            if (['a','ArrowLeft'].includes(e.key.toLowerCase())) keys.a = false;
+            if (['d','ArrowRight'].includes(e.key.toLowerCase())) keys.d = false;
+        });
+
+        let isOrbiting = false;
+        let prevMouseX = 0;
+        let cameraOrbitAngle = 0;
+
+        window.addEventListener('mousedown', e => { if (!gameState.driveMode && e.clientY > 80) isOrbiting = true; });
+        window.addEventListener('mouseup', () => isOrbiting = false);
+        window.addEventListener('mousemove', e => {
+            if (isOrbiting && !gameState.driveMode) {
+                cameraOrbitAngle -= (e.clientX - prevMouseX) * 0.008;
             }
-            ownerRatio = currentRatio;
-            document.getElementById('owner-status').innerText = "✅ دەموچاوت پاشەکەوتکرا!";
-            document.getElementById('owner-status').className = "text-[10px] text-emerald-400 font-bold text-center font-mono";
-            playSoftChime();
-        }
+            prevMouseX = e.clientX;
+        });
 
-        function onResults(results) {
-            canvasElement.width = videoElement.videoWidth;
-            canvasElement.height = videoElement.videoHeight;
+        /* ================= ANIMATION LOOP ================= */
+        function animate() {
+            requestAnimationFrame(animate);
 
-            canvasCtx.save();
-            canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-            canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
+            if (!gameState.driveMode) {
+                platform.rotation.y += 0.002;
+                if (!isOrbiting) cameraOrbitAngle += 0.0015;
 
-            const landmarks = results.multiFaceLandmarks ? results.multiFaceLandmarks[0] : null;
-            document.getElementById('faces-cnt').innerText = landmarks ? 1 : 0;
-
-            if (landmarks) {
-                currentRatio = calculateRatio(landmarks);
-
-                let minX = 1, minY = 1, maxX = 0, maxY = 0;
-                for (let i = 0; i < landmarks.length; i += 5) { // Skip points to boost speed
-                    const pt = landmarks[i];
-                    if (pt.x < minX) minX = pt.x;
-                    if (pt.x > maxX) maxX = pt.x;
-                    if (pt.y < minY) minY = pt.y;
-                    if (pt.y > maxY) maxY = pt.y;
-                }
-
-                const x = minX * canvasElement.width;
-                const y = minY * canvasElement.height;
-                const w = (maxX - minX) * canvasElement.width;
-                const h = (maxY - minY) * canvasElement.height;
-
-                let isOwner = false;
-                if (ownerRatio !== null) {
-                    const diff = Math.abs(currentRatio - ownerRatio);
-                    if (diff <= 0.09) isOwner = true;
-                }
-
-                canvasCtx.strokeStyle = isOwner ? '#22c55e' : '#ef4444';
-                canvasCtx.lineWidth = 3;
-                canvasCtx.strokeRect(x, y, w, h);
-
-                canvasCtx.save();
-                canvasCtx.scale(-1, 1);
-                canvasCtx.fillStyle = isOwner ? '#22c55e' : '#ef4444';
-                canvasCtx.font = 'bold 13px Inter';
-                canvasCtx.fillText(isOwner ? 'AUTHORIZED (تۆ)' : 'UNKNOWN PERSON', -(x + w), y > 20 ? y - 10 : 20);
-                canvasCtx.restore();
-
-                if (!isOwner && ownerRatio !== null) {
-                    alertBadge.classList.remove('hidden');
-                    statusText.innerText = "🚨 ئاگاداری: کەسێکی نەناسراو دۆزرایەوە!";
-                    statusText.className = "w-full py-1 text-center text-[11px] font-mono text-rose-500 font-bold";
-                    playSoftChime();
-                } else if (isOwner) {
-                    alertBadge.classList.add('hidden');
-                    statusText.innerText = "خاوەنەکەی ناسرایەوە (سەلامەتە)";
-                    statusText.className = "w-full py-1 text-center text-[11px] font-mono text-emerald-400";
-                } else {
-                    alertBadge.classList.add('hidden');
-                    statusText.innerText = "کەسێک دۆزرایەوە. دەتوانیت تۆماری بکەیت.";
-                    statusText.className = "w-full py-1 text-center text-[11px] font-mono text-cyan-400";
-                }
-
-                const now = Date.now();
-                if (now - lastSnapTime > 3000) {
-                    captureCrop(x, y, w, h);
-                    lastSnapTime = now;
-                }
+                const camDist = 7.5;
+                camera.position.x = Math.sin(cameraOrbitAngle) * camDist;
+                camera.position.z = Math.cos(cameraOrbitAngle) * camDist;
+                camera.position.y = 2.4;
+                camera.lookAt(0, 0.6, 0);
             } else {
-                alertBadge.classList.add('hidden');
-                statusText.innerText = "هیچ کەسێک لە مەودای کامێراکەدا نییە";
-                statusText.className = "w-full py-1 text-center text-[11px] font-mono text-slate-400";
-            }
-            canvasCtx.restore();
-        }
+                const carData = gameState.cars.find(c => c.id === gameState.equippedId);
 
-        function captureCrop(x, y, w, h) {
-            const emptyMsg = document.getElementById('empty-msg');
-            if (emptyMsg) emptyMsg.remove();
+                if (keys.w) physics.speed += carData.accel;
+                else if (keys.s) physics.speed -= carData.accel * 0.6;
+                else physics.speed *= 0.96;
 
-            const cropCanvas = document.createElement('canvas');
-            const cropCtx = cropCanvas.getContext('2d');
-            cropCanvas.width = 90;
-            cropCanvas.height = 90;
+                if (Math.abs(physics.speed) > 0.01) {
+                    const dir = physics.speed > 0 ? 1 : -1;
+                    if (keys.a) physics.angle += 0.035 * dir;
+                    if (keys.d) physics.angle -= 0.035 * dir;
+                }
 
-            cropCtx.drawImage(canvasElement, x, y, w, h, 0, 0, 90, 90);
-            const imgUrl = cropCanvas.toDataURL('image/png');
+                physics.x += Math.cos(physics.angle) * physics.speed;
+                physics.z -= Math.sin(physics.angle) * physics.speed;
 
-            const item = document.createElement('img');
-            item.src = imgUrl;
-            item.className = "w-12 h-12 object-cover rounded-lg border border-slate-700 flex-shrink-0";
+                currentVehicleMesh.position.set(physics.x, 0, physics.z);
+                currentVehicleMesh.rotation.y = physics.angle;
 
-            capturesList.prepend(item);
-            totalSnaps++;
-            document.getElementById('snaps-cnt').innerText = totalSnaps;
-        }
+                const camX = physics.x - Math.cos(physics.angle) * 8;
+                const camZ = physics.z + Math.sin(physics.angle) * 8;
+                camera.position.set(camX, 3.2, camZ);
+                camera.lookAt(physics.x, 0.8, physics.z);
 
-        async function startSystem() {
-            if (!faceMesh) initEngine();
-            isSystemRunning = true;
-
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({
-                    video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } },
-                    audio: false
-                });
-                videoElement.srcObject = stream;
-                await videoElement.play();
-
-                camera = new Camera(videoElement, {
-                    onFrame: async () => {
-                        if (isSystemRunning) await faceMesh.send({ image: videoElement });
-                    }
-                });
-                camera.start();
-
-                document.getElementById('standby-text').classList.add('hidden');
-                document.getElementById('btn-start').disabled = true;
-                document.getElementById('btn-start').classList.add('opacity-30');
-                document.getElementById('btn-stop').disabled = false;
-                document.getElementById('btn-stop').classList.remove('opacity-30');
-
-                document.getElementById('status-indicator').className = "w-3 h-3 bg-emerald-500 rounded-full animate-ping";
-            } catch (err) {
-                alert("کامێرا نەکرایەوە: " + err.message + "\nتکایە ڕێگەپێدان بدە بە کامێراکە.");
-            }
-        }
-
-        function stopSystem() {
-            isSystemRunning = false;
-            if (camera) camera.stop();
-            if (videoElement.srcObject) {
-                videoElement.srcObject.getTracks().forEach(track => track.stop());
+                document.getElementById('speed-num').textContent = Math.round(Math.abs(physics.speed) * 110);
             }
 
-            canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-            document.getElementById('standby-text').classList.remove('hidden');
-            alertBadge.classList.add('hidden');
-
-            document.getElementById('btn-start').disabled = false;
-            document.getElementById('btn-start').classList.remove('opacity-30');
-            document.getElementById('btn-stop').disabled = true;
-            document.getElementById('btn-stop').classList.add('opacity-30');
-
-            document.getElementById('status-indicator').className = "w-3 h-3 bg-rose-500 rounded-full";
-            statusText.innerText = "سیستەمەکە وەستا.";
+            composer.render();
         }
 
-        function toggleSound() {
-            isSoundEnabled = !isSoundEnabled;
-            document.getElementById('btn-sound').innerText = isSoundEnabled ? "🔊 چالاکە" : "🔇 بێدەنگ";
+        /* ================= UI FUNCTIONS ================= */
+        window.toggleDriveMode = function() {
+            gameState.driveMode = !gameState.driveMode;
+            const driveBtn = document.getElementById('drive-btn');
+            const carDetails = document.getElementById('car-details-card');
+            const speedometer = document.getElementById('speedometer');
+
+            if (gameState.driveMode) {
+                driveBtn.textContent = 'EXIT TEST DRIVE';
+                carDetails.style.display = 'none';
+                speedometer.style.display = 'block';
+                environmentGroup.visible = false;
+            } else {
+                driveBtn.textContent = '🏎️ DRIVE IN OPEN WORLD';
+                carDetails.style.display = 'block';
+                speedometer.style.display = 'none';
+                environmentGroup.visible = true;
+
+                physics.x = 0; physics.z = 0; physics.speed = 0; physics.angle = 0;
+                currentVehicleMesh.position.set(0, 0, 0);
+                currentVehicleMesh.rotation.set(0, 0, 0);
+            }
+        };
+
+        window.toggleTimeOfDay = function() {
+            gameState.isDaylight = !gameState.isDaylight;
+            if (gameState.isDaylight) {
+                scene.background.setHex(0x87ceeb);
+                scene.fog.color.setHex(0x87ceeb);
+                ambientLight.intensity = 0.9;
+                sunLight.intensity = 2.5;
+            } else {
+                scene.background.setHex(0x0a0e17);
+                scene.fog.color.setHex(0x0a0e17);
+                ambientLight.intensity = 0.2;
+                sunLight.intensity = 0.4;
+            }
+        };
+
+        window.paintVehicle = function(hex, el) {
+            if (vehiclePaintMat) vehiclePaintMat.color.setHex(hex);
+            document.querySelectorAll('.color-chip').forEach(c => c.classList.remove('active'));
+            if (el) el.classList.add('active');
+        };
+
+        window.openModal = function(id) {
+            window.closeModals();
+            if (id === 'store-modal') renderStore();
+            if (id === 'garage-modal') renderGarage();
+            document.getElementById(id).style.display = 'flex';
+        };
+
+        window.closeModals = function() {
+            document.querySelectorAll('.modal-backdrop').forEach(m => m.style.display = 'none');
+        };
+
+        function renderStore() {
+            const grid = document.getElementById('store-grid');
+            grid.innerHTML = '';
+            gameState.cars.forEach(car => {
+                const owned = gameState.ownedCars.includes(car.id);
+                const div = document.createElement('div');
+                div.className = 'vehicle-card';
+                div.innerHTML = `
+                    <div style="font-weight:900;">${car.name}</div>
+                    <div style="color:#64748b; font-size:0.85rem;">Top Speed: ${car.speed} KM/H</div>
+                    <div style="color:#16a34a; font-weight:800;">${owned ? 'OWNED' : '$' + car.price.toLocaleString()}</div>
+                    <button class="btn-ui btn-primary" style="justify-content:center;" ${owned ? 'disabled style="opacity:0.5"' : ''} onclick="buyCar('${car.id}')">
+                        ${owned ? 'Purchased' : 'Purchase'}
+                    </button>
+                `;
+                grid.appendChild(div);
+            });
         }
 
-        function clearCaptures() {
-            capturesList.innerHTML = '<p id="empty-msg" class="text-slate-600 text-[11px] mx-auto">هیچ وێنەیەک پاشەکەوت نەکراوە</p>';
-            totalSnaps = 0;
-            document.getElementById('snaps-cnt').innerText = "0";
+        function renderGarage() {
+            const grid = document.getElementById('garage-grid');
+            grid.innerHTML = '';
+            gameState.cars.filter(c => gameState.ownedCars.includes(c.id)).forEach(car => {
+                const isEquipped = gameState.equippedId === car.id;
+                const div = document.createElement('div');
+                div.className = 'vehicle-card';
+                div.innerHTML = `
+                    <div style="font-weight:900;">${car.name}</div>
+                    <button class="btn-ui btn-primary" style="justify-content:center;" onclick="equipCar('${car.id}')">
+                        ${isEquipped ? 'Equipped' : 'Select Vehicle'}
+                    </button>
+                `;
+                grid.appendChild(div);
+            });
         }
+
+        window.buyCar = function(id) {
+            const car = gameState.cars.find(c => c.id === id);
+            if (gameState.cash >= car.price) {
+                gameState.cash -= car.price;
+                gameState.ownedCars.push(id);
+                document.getElementById('cash-display').textContent = `$${gameState.cash.toLocaleString()}`;
+                renderStore();
+            }
+        };
+
+        window.equipCar = function(id) {
+            gameState.equippedId = id;
+            loadVehicle(id);
+            window.closeModals();
+        };
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            composer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        animate();
     </script>
 </body>
 </html>
